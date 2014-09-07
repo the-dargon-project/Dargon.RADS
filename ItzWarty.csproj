@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ItzWarty</RootNamespace>
+    <AssemblyName>wLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TempBuild|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\TempBuild\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TempBuild|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\TempBuild\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DummyPlatform|AnyCPU'">
+    <OutputPath>bin\DummyPlatform\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DummyPlatform|x86'">
+    <OutputPath>bin\x86\DummyPlatform\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CLIStatus.cs" />
+    <Compile Include="Collections\ConcurrentSet.cs" />
+    <Compile Include="Collections\IOrderedDictionary.cs" />
+    <Compile Include="Collections\OrderedDictionary.cs" />
+    <Compile Include="Collections\OrderedMultiValueDictionary.cs" />
+    <Compile Include="Collections\PriorityQueue.cs" />
+    <Compile Include="Collections\ValuesSortState.cs" />
+    <Compile Include="EqualityComparer.cs" />
+    <Compile Include="ExpiringCache.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Extensions.Assembly.cs" />
+    <Compile Include="Extensions.Collections.cs" />
+    <Compile Include="Extensions.Drawing.cs" />
+    <Compile Include="Extensions.IO.cs" />
+    <Compile Include="Extensions.Linq.cs" />
+    <Compile Include="Extensions.String.cs" />
+    <Compile Include="Extensions.Treelike.cs" />
+    <Compile Include="Extensions.Within.cs" />
+    <Compile Include="FileSizeFormatProvider.cs" />
+    <Compile Include="FileUtil.cs" />
+    <Compile Include="FontLoader.cs" />
+    <Compile Include="Geometry\Clockness.cs" />
+    <Compile Include="Geometry\Displays\Plot2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Geometry\Displays\Display2D.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Geometry\Face3D.cs" />
+    <Compile Include="Geometry\InfinitesimalIterationException.cs" />
+    <Compile Include="Geometry\IReadOnlyPoint3DSet.cs" />
+    <Compile Include="Geometry\Line3D.cs" />
+    <Compile Include="Geometry\Parabola2D.cs" />
+    <Compile Include="Geometry\Point3D.cs" />
+    <Compile Include="Geometry\PointCollection3D.cs" />
+    <Compile Include="Geometry\PointCollection2D.cs" />
+    <Compile Include="Geometry\Ray3D.cs" />
+    <Compile Include="Geometry\Shape3D.cs" />
+    <Compile Include="Geometry\ShapeType3D.cs" />
+    <Compile Include="Geometry\Vertex3D.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\FortunesAlgorithm.Display.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VCircleEvent.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VEdgeNode.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VNode.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VEvent.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\FortunesAlgorithm.cs" />
+    <Compile Include="Geometry\GeometryUtilities.cs" />
+    <Compile Include="Geometry\Line2D.cs" />
+    <Compile Include="Geometry\Quad2D.cs" />
+    <Compile Include="Geometry\Triangle2D.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VParabolaCoefficients.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VSiteEvent.cs" />
+    <Compile Include="Geometry\VoronoiAlgorithms\VParabolaNode.cs" />
+    <Compile Include="Geometry\VoronoiDiagram.cs" />
+    <Compile Include="Geometry\IReadOnlyPoint2DSet.cs" />
+    <Compile Include="Geometry\Edge3D.cs" />
+    <Compile Include="Collections\MultiValueDictionary.cs" />
+    <Compile Include="LambdaComparer.cs" />
+    <Compile Include="Networking\LowIntegrityPipeFactory.cs" />
+    <Compile Include="Output.cs" />
+    <Compile Include="ParentProcessUtilities.cs" />
+    <Compile Include="ClassLoader.cs" />
+    <Compile Include="Geometry\Point2D.cs" />
+    <Compile Include="PerformanceUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NullConsole.cs" />
+    <Compile Include="ReverseComparer.cs" />
+    <Compile Include="Geometry\Shape2D.cs" />
+    <Compile Include="Geometry\ShapeType2D.cs" />
+    <Compile Include="Services\IServiceLocator.cs" />
+    <Compile Include="Services\ServiceLocator.cs" />
+    <Compile Include="SingleGlobalInstance.cs" />
+    <Compile Include="StaticRandom.cs" />
+    <Compile Include="TemporarySeek.cs" />
+    <Compile Include="ThirdParty\Ini\IniFile.cs" />
+    <Compile Include="ThirdParty\ScreenCapture.cs" />
+    <Compile Include="UniqueIdentificationSet.cs" />
+    <Compile Include="UsingTimer.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="Geometry\Vector2D.cs" />
+    <Compile Include="Geometry\Vector3D.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="Utilities.Octals.cs" />
+    <Compile Include="WinAPI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License - Algorithmia.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
