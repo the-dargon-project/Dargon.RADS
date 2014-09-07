@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/74/ThirdParty/ItzWarty/ItzWartyLib
+END
+NullConsole.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/74/ThirdParty/ItzWarty/ItzWartyLib/NullConsole.cs
+END
+Util.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/115/ThirdParty/ItzWarty/ItzWartyLib/Util.cs
+END
+Logger.cs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/74/ThirdParty/ItzWarty/ItzWartyLib/Logger.cs
+END
+WinAPI.cs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/150/ThirdParty/ItzWarty/ItzWartyLib/WinAPI.cs
+END
+ItzWarty.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/157/ThirdParty/ItzWarty/ItzWartyLib/ItzWarty.csproj
+END
+ApplicationInformation.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/109/ThirdParty/ItzWarty/ItzWartyLib/ApplicationInformation.cs
+END
+Extends.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/157/ThirdParty/ItzWarty/ItzWartyLib/Extends.cs
+END
