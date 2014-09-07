@@ -1,0 +1,170 @@
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using ItzWarty;
+
+namespace Dargon.IO.RADS
+{
+   public class ReleaseManifestLoader
+   {
+      // - constants ------------------------------------------------------------------------------
+      private const int kDirectoryEntrySize = sizeof(UInt32) * 5;
+      private const int kFileEntrySize = 44;
+
+      // - deserialization ------------------------------------------------------------------------
+      /// <summary>
+      /// Loads a Riot Application Distribution System Release Manifest file from the given path.
+      /// </summary>
+      public ReleaseManifest Load(string path)
+      {
+         using (var ms = new MemoryStream(File.ReadAllBytes(path)))
+         using (var reader = new BinaryReader(ms)) {
+            var rmFile = new ReleaseManifest();
+            var context = new DeserializationContext() { ReleaseManifest = rmFile };
+
+            DeserializeHeader(reader, rmFile, context);
+            DeserializeSkipFileSystemBody(reader, rmFile, context);
+            DeserializeStringTable(reader, rmFile, context);
+            DeserializeFileSystemBody(reader, rmFile, context);
+
+            return rmFile;
+         } // using
+      } // FromFile
+
+      /// <summary>
+      /// Loads the header block of a release manifest file
+      /// </summary>
+      private void DeserializeHeader(
+         BinaryReader reader,
+         ReleaseManifest manifest,
+         DeserializationContext context)
+      {
+         manifest.Header.magic = reader.ReadUInt32();
+         manifest.Header.formatVersion = reader.ReadUInt32();
+         manifest.Header.unknownCount = reader.ReadUInt32();
+         manifest.Header.entityVersion = reader.ReadUInt32();
+      }
+
+      /// <summary>
+      /// Skips over the filesystem body portion of a release manifest file.
+      /// 
+      /// Offsets to the directory and file tables' contents are stored in the deserialization
+      /// context object.
+      /// </summary>
+      private void DeserializeSkipFileSystemBody(
+         BinaryReader reader,
+         ReleaseManifest manifest,
+         DeserializationContext context)
+      {
+         context.DirectoryTableCount = reader.ReadUInt32();
+         context.DirectoryTableDataOffset = reader.BaseStream.Position;
+         reader.BaseStream.Position += kDirectoryEntrySize * context.DirectoryTableCount;
+
+         context.FileTableCount = reader.ReadUInt32();
+         context.FileTableDataOffset = reader.BaseStream.Position;
+         reader.BaseStream.Position += kFileEntrySize * context.FileTableCount;
+      }
+
+      /// <summary>
+      /// Deserializes the string table of a release manifest file
+      /// </summary>
+      private void DeserializeStringTable(
+         BinaryReader reader,
+         ReleaseManifest manifest,
+         DeserializationContext context)
+      {
+         var stringTable = new ReleaseManifestStringTable();
+         stringTable.Count = reader.ReadUInt32();
+         stringTable.BlockSize = reader.ReadUInt32();
+         stringTable.Strings = new string[stringTable.Count];
+         for (var i = 0; i < stringTable.Count; i++)
+            stringTable.Strings[i] = reader.ReadNullTerminatedString();
+         manifest.StringTable = stringTable;
+      }
+
+      /// <summary>
+      /// Deserializes the filesystem portion (directory and files) of a release manifest file.
+      /// </summary>
+      private void DeserializeFileSystemBody(
+         BinaryReader reader,
+         ReleaseManifest manifest,
+         DeserializationContext context)
+      {
+         // - First load the directory block and treeify it ---------------------------------------
+         reader.BaseStream.Position = context.DirectoryTableDataOffset;
+         context.DirectoryDescriptors = new ReleaseManifestDirectoryDescriptor[context.DirectoryTableCount];
+         context.FileParentTable = new ReleaseManifestDirectoryEntry[context.FileTableCount];
+         context.DirectoryTable = new ReleaseManifestDirectoryEntry[context.DirectoryTableCount];
+
+         for (var i = 0; i < context.DirectoryTableCount; i++)
+            context.DirectoryDescriptors[i] = reader.ReadRMDirectoryDescriptor();
+
+         DeserializeTreeifyDirectoryDescriptor(0, context);
+         manifest.Directories = new ReadOnlyCollection<ReleaseManifestDirectoryEntry>(context.DirectoryTable);
+         manifest.Root = context.DirectoryTable[0];
+
+         // - Place the File Descriptors into our tree---------------------------------------------
+         reader.BaseStream.Position = context.FileTableDataOffset;
+         var files = new ReleaseManifestFileEntry[context.FileTableCount];
+         for (var fileId = 0U; fileId < context.FileTableCount; fileId++) {
+            var fileDescriptor = reader.ReadRMFileEntryDescriptor();
+            files[fileId] = new ReleaseManifestFileEntry(
+               fileId,
+               manifest,
+               fileDescriptor,
+               context.FileParentTable[fileId]
+               );
+         }
+
+         manifest.Files = new ReadOnlyCollection<ReleaseManifestFileEntry>(files);
+      }
+
+      /// <summary>
+      /// Helper method for the treeification of a list of directory descriptors.
+      /// </summary>
+      /// <param name="directoryId"></param>
+      /// <param name="context"></param>
+      private void DeserializeTreeifyDirectoryDescriptor(
+         uint directoryId,
+         DeserializationContext context,
+         ReleaseManifestDirectoryEntry parent = null)
+      {
+         // construct node at index
+         var directoryDescriptor = context.DirectoryDescriptors[directoryId];
+         var directoryNode = new ReleaseManifestDirectoryEntry(directoryId, context.ReleaseManifest, directoryDescriptor, parent);
+         context.DirectoryTable[directoryId] = directoryNode;
+
+         // associate with directory's files
+         // The if statement stops us from setting lastFileId to UINT32.MAX when we are
+         // a childless dir 0
+         if (directoryDescriptor.FileCount != 0) {
+            var lastFileId = directoryDescriptor.FileStart + directoryDescriptor.FileCount - 1;
+            for (var fileId = directoryDescriptor.FileStart; fileId <= lastFileId; fileId++)
+               context.FileParentTable[fileId] = directoryNode;
+         }
+
+         // load subdirectories
+         var lastSubdirectoryId = directoryDescriptor.SubdirectoryStart + directoryDescriptor.SubdirectoryCount - 1;
+         for (var subdirectoryId = directoryDescriptor.SubdirectoryStart; subdirectoryId <= lastSubdirectoryId; subdirectoryId++) {
+            DeserializeTreeifyDirectoryDescriptor(subdirectoryId, context, directoryNode);
+         }
+      }
+
+      private class DeserializationContext
+      {
+         public ReleaseManifest ReleaseManifest;
+
+         // Loaded by DeserializeSkipFileSystemBody
+         public uint DirectoryTableCount;
+         public long DirectoryTableDataOffset;
+
+         public uint FileTableCount;
+         public long FileTableDataOffset;
+
+         // Loaded by DeserializeFileSystemBody calls to DeserializeTreeifyDirectoryDescriptor
+         public ReleaseManifestDirectoryDescriptor[] DirectoryDescriptors;
+         public ReleaseManifestDirectoryEntry[] FileParentTable;
+         public ReleaseManifestDirectoryEntry[] DirectoryTable;
+      }
+   }
+}
