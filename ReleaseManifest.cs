@@ -2,7 +2,7 @@
 
 namespace Dargon.IO.RADS
 {
-   public partial class ReleaseManifest
+   public class ReleaseManifest
    {
       public ReleaseManifestHeader Header { get; internal set; }
       public ReadOnlyCollection<ReleaseManifestFileEntry> Files { get; internal set; }

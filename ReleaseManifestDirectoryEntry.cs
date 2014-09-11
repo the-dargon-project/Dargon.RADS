@@ -32,6 +32,8 @@ namespace Dargon.IO.RADS
 
          m_directories = new List<ReleaseManifestDirectoryEntry>((int)descriptor.SubdirectoryCount);
          m_files = new List<ReleaseManifestFileEntry>((int)descriptor.FileCount);
+
+         this.Name = releaseManifest.StringTable[descriptor.NameIndex];
       }
 
       // - Public Getters -------------------------------------------------------------------------

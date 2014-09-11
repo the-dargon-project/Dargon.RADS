@@ -32,13 +32,12 @@ namespace Dargon.IO.RADS
          m_parent = parent;
          m_parent.m_files.Add(this);
          m_parent.AddChild(this); // TODO: Override to remove duplication
+
+         Name = m_releaseManifest.StringTable[NameStringTableIndex];
       }
 
 
       // - Public Getters -------------------------------------------------------------------------
-      // :: Boilerplate ::
-      public string Name { get { return m_releaseManifest.StringTable[NameStringTableIndex]; } }
-
       public IReadOnlyCollection<ReleaseManifestFileEntry> Files { get { return kEmptyFiles; } }
       public IReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get { return kEmptyDirectories; } }
       
