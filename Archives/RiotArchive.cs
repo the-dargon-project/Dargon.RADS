@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ItzWarty;
+using System;
 using System.IO;
-using ItzWarty;
 
 // Formerly RAFArchive from 8 May 2011 ~~ItzWarty
 namespace Dargon.IO.RADS.Archives

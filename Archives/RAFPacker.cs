@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ItzWarty;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using ItzWarty;
 
 namespace Dargon.IO.RADS.Archives
 {

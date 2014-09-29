@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dargon.IO.RADS
 {
-   public enum RiotProjectType
+   [Flags]
+   public enum RiotProjectType : uint
    {
-      Unknown = -1,
-      AirClient,
-      AirClientConfig,
-      GameClient,
-      GameClientConfig,
-      Launcher,
+      Unknown           = 0x00000001U,
+      AirClient         = 0x00000002U,
+      AirClientConfig   = 0x00000004U,
+      GameClient        = 0x00000008U,
+      GameClientConfig  = 0x00000010U,
+      Launcher          = 0x00000020U
    }
 }

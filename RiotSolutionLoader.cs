@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dargon.IO.RADS
 {
@@ -31,7 +27,7 @@ namespace Dargon.IO.RADS
             else if (projectName.Equals("lol_launcher", StringComparison.OrdinalIgnoreCase))
                projectType = RiotProjectType.Launcher;
 
-            if (projectTypeLimit == null || projectTypeLimit.Value == projectType) {
+            if (projectTypeLimit == null || projectTypeLimit.Value.HasFlag(projectType)) {
                solution.AddProject(projectLoader.LoadProject(projectType, projectPath, projectName));
             }
          }
