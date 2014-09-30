@@ -8,7 +8,7 @@ namespace Dargon.IO.RADS
       public RiotSolution Load(string radsPath, RiotProjectType? projectTypeLimit = null)
       {
          var solution = new RiotSolution(radsPath);
-         var projectLoader = new RiotProjectLoader();
+         var projectLoader = new RiotProjectLoader(radsPath);
          var projectsDirectory = Path.Combine(radsPath, "projects");
          var projectDirectories = Directory.GetDirectories(projectsDirectory);
          foreach (var projectPath in projectDirectories)
@@ -28,7 +28,7 @@ namespace Dargon.IO.RADS
                projectType = RiotProjectType.Launcher;
 
             if (projectTypeLimit == null || projectTypeLimit.Value.HasFlag(projectType)) {
-               solution.AddProject(projectLoader.LoadProject(projectType, projectPath, projectName));
+               solution.AddProject(projectLoader.LoadProject(projectType, projectPath));
             }
          }
 

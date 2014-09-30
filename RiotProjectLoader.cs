@@ -1,4 +1,5 @@
-﻿using ItzWarty;
+﻿using System;
+using ItzWarty;
 using System.IO;
 using System.Linq;
 
@@ -6,7 +7,24 @@ namespace Dargon.IO.RADS
 {
    public class RiotProjectLoader
    {
-      public RiotProject LoadProject(RiotProjectType projectType, string projectPath, string projectName)
+      private readonly string projectsDirectoryPath;
+
+      public RiotProjectLoader(string radsPath) { projectsDirectoryPath = Path.Combine(radsPath, "projects"); }
+
+      public RiotProject LoadProject(RiotProjectType projectType)
+      {
+         string projectName;
+         if (projectType == RiotProjectType.AirClient)
+            projectName = "lol_air_client";
+         else if (projectType == RiotProjectType.GameClient)
+            projectName = "lol_game_client";
+         else {
+            throw new NotImplementedException();
+         }
+         return LoadProject(projectType, Path.Combine(projectsDirectoryPath, projectName));
+      }
+
+      public RiotProject LoadProject(RiotProjectType projectType, string projectPath)
       {
          // - Find the RADS Project's latest release directory ------------------------------------
          var versionStringParser = new VersionStringParser();
