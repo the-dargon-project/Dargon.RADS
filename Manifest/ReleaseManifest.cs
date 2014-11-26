@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.IO.RADS.Manifest {
    public class ReleaseManifest {
       public ReleaseManifestHeader Header { get; internal set; }
       public ReadOnlyCollection<ReleaseManifestFileEntry> Files { get; internal set; }

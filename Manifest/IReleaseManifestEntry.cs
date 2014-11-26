@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.IO.RADS.Manifest {
    public interface IReleaseManifestEntry {
       string Name { get; }
       string Path { get; }

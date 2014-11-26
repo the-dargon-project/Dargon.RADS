@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
 using ItzWarty;
 using ItzWarty.Collections;
 using NMockito;

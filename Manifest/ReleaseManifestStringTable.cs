@@ -1,4 +1,4 @@
-﻿namespace Dargon.IO.RADS {
+﻿namespace Dargon.IO.RADS.Manifest {
    public class ReleaseManifestStringTable {
       public uint Count { get; internal set; }
       public uint BlockSize { get; internal set; }

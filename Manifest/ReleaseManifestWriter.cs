@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.IO.RADS.Manifest {
    public class ReleaseManifestWriter {
       private readonly ReleaseManifest manifest;
 

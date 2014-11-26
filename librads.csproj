@@ -74,21 +74,21 @@
     <Compile Include="Archives\RAFStringTable.cs" />
     <Compile Include="Archives\RAFUtil.cs" />
     <Compile Include="Archives\RiotArchiveLoader.cs" />
-    <Compile Include="IReleaseManifestEntry.cs" />
+    <Compile Include="Manifest\IReleaseManifestEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReleaseManifest.cs" />
-    <Compile Include="ReleaseManifestLoader.cs" />
-    <Compile Include="Extensions.ReleaseManifest.cs" />
-    <Compile Include="ReleaseManifestWriter.cs" />
-    <Compile Include="ReleaseManifestDirectoryEntry.cs" />
-    <Compile Include="ReleaseManifestFileEntry.cs" />
-    <Compile Include="ReleaseManifestStringTable.cs" />
+    <Compile Include="Manifest\ReleaseManifest.cs" />
+    <Compile Include="Manifest\ReleaseManifestLoader.cs" />
+    <Compile Include="Manifest\Extensions.ReleaseManifest.cs" />
+    <Compile Include="Manifest\ReleaseManifestWriter.cs" />
+    <Compile Include="Manifest\ReleaseManifestDirectoryEntry.cs" />
+    <Compile Include="Manifest\ReleaseManifestFileEntry.cs" />
+    <Compile Include="Manifest\ReleaseManifestStringTable.cs" />
     <Compile Include="RiotProject.cs" />
     <Compile Include="RiotProjectLoader.cs" />
     <Compile Include="RiotProjectType.cs" />
     <Compile Include="RiotSolution.cs" />
-    <Compile Include="ReleaseManifestDirectoryDescriptor.cs" />
-    <Compile Include="ReleaseManifestFileEntryDescriptor.cs" />
+    <Compile Include="Manifest\ReleaseManifestDirectoryDescriptor.cs" />
+    <Compile Include="Manifest\ReleaseManifestFileEntryDescriptor.cs" />
     <Compile Include="RiotSolutionLoader.cs" />
   </ItemGroup>
   <ItemGroup>

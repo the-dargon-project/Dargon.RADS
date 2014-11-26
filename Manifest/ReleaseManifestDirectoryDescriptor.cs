@@ -1,4 +1,4 @@
-namespace Dargon.IO.RADS {
+namespace Dargon.IO.RADS.Manifest {
    /// <summary>
    /// For internal intermediate representation only
    /// </summary>

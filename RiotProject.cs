@@ -1,4 +1,6 @@
-﻿namespace Dargon.IO.RADS {
+﻿using Dargon.IO.RADS.Manifest;
+
+namespace Dargon.IO.RADS {
    public class RiotProject {
       private readonly RiotProjectType projectType;
       private readonly ReleaseManifest releaseManifest;
