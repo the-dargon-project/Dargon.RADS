@@ -1,6 +1,6 @@
-﻿using System;
-using Dargon.IO.RADS.Manifest;
+﻿using Dargon.IO.RADS.Manifest;
 using ItzWarty;
+using System;
 using System.IO;
 using System.Linq;
 
