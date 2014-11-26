@@ -1,10 +1,8 @@
 ﻿using System;
 
-namespace Dargon.IO.RADS
-{
+namespace Dargon.IO.RADS {
    [Flags]
-   public enum RiotProjectType : uint
-   {
+   public enum RiotProjectType : uint {
       Unknown           = 0x00000001U,
       AirClient         = 0x00000002U,
       AirClientConfig   = 0x00000004U,

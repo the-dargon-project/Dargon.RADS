@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using ItzWarty;
 
-namespace Dargon.IO.RADS
-{
-   public class ReleaseManifestLoader
-   {
+namespace Dargon.IO.RADS {
+   public class ReleaseManifestLoader {
       // - constants ------------------------------------------------------------------------------
       private const int kDirectoryEntrySize = sizeof(UInt32) * 5;
       private const int kFileEntrySize = 44;
@@ -16,8 +14,7 @@ namespace Dargon.IO.RADS
       /// <summary>
       /// Loads a Riot Application Distribution System Release Manifest file from the given path.
       /// </summary>
-      public ReleaseManifest LoadFile(string path)
-      {
+      public ReleaseManifest LoadFile(string path) {
          using (var ms = new MemoryStream(File.ReadAllBytes(path)))
          using (var reader = new BinaryReader(ms)) {
             var rmFile = new ReleaseManifest();
@@ -32,8 +29,7 @@ namespace Dargon.IO.RADS
          } // using
       }
 
-      public ReleaseManifest LoadProjectManifest(string radsPath, RiotProjectType projectType)
-      {
+      public ReleaseManifest LoadProjectManifest(string radsPath, RiotProjectType projectType) {
          string projectName;
          if (projectType == RiotProjectType.GameClient) {
             projectName = "lol_game_client";
@@ -53,8 +49,7 @@ namespace Dargon.IO.RADS
       private void DeserializeHeader(
          BinaryReader reader,
          ReleaseManifest manifest,
-         DeserializationContext context)
-      {
+         DeserializationContext context) {
          manifest.Header.magic = reader.ReadUInt32();
          manifest.Header.formatVersion = reader.ReadUInt32();
          manifest.Header.unknownCount = reader.ReadUInt32();
@@ -70,8 +65,7 @@ namespace Dargon.IO.RADS
       private void DeserializeSkipFileSystemBody(
          BinaryReader reader,
          ReleaseManifest manifest,
-         DeserializationContext context)
-      {
+         DeserializationContext context) {
          context.DirectoryTableCount = reader.ReadUInt32();
          context.DirectoryTableDataOffset = reader.BaseStream.Position;
          reader.BaseStream.Position += kDirectoryEntrySize * context.DirectoryTableCount;
@@ -87,8 +81,7 @@ namespace Dargon.IO.RADS
       private void DeserializeStringTable(
          BinaryReader reader,
          ReleaseManifest manifest,
-         DeserializationContext context)
-      {
+         DeserializationContext context) {
          var stringTable = new ReleaseManifestStringTable();
          stringTable.Count = reader.ReadUInt32();
          stringTable.BlockSize = reader.ReadUInt32();
@@ -104,8 +97,7 @@ namespace Dargon.IO.RADS
       private void DeserializeFileSystemBody(
          BinaryReader reader,
          ReleaseManifest manifest,
-         DeserializationContext context)
-      {
+         DeserializationContext context) {
          // - First load the directory block and treeify it ---------------------------------------
          reader.BaseStream.Position = context.DirectoryTableDataOffset;
          context.DirectoryDescriptors = new ReleaseManifestDirectoryDescriptor[context.DirectoryTableCount];
@@ -124,12 +116,7 @@ namespace Dargon.IO.RADS
          var files = new ReleaseManifestFileEntry[context.FileTableCount];
          for (var fileId = 0U; fileId < context.FileTableCount; fileId++) {
             var fileDescriptor = reader.ReadRMFileEntryDescriptor();
-            files[fileId] = new ReleaseManifestFileEntry(
-               fileId,
-               manifest,
-               fileDescriptor,
-               context.FileParentTable[fileId]
-               );
+            files[fileId] = new ReleaseManifestFileEntry(fileId, manifest, fileDescriptor, context.FileParentTable[fileId]);
          }
 
          manifest.Files = new ReadOnlyCollection<ReleaseManifestFileEntry>(files);
@@ -143,8 +130,7 @@ namespace Dargon.IO.RADS
       private void DeserializeTreeifyDirectoryDescriptor(
          uint directoryId,
          DeserializationContext context,
-         ReleaseManifestDirectoryEntry parent = null)
-      {
+         ReleaseManifestDirectoryEntry parent = null) {
          // construct node at index
          var directoryDescriptor = context.DirectoryDescriptors[directoryId];
          var directoryNode = new ReleaseManifestDirectoryEntry(directoryId, context.ReleaseManifest, directoryDescriptor, parent);
@@ -166,8 +152,7 @@ namespace Dargon.IO.RADS
          }
       }
 
-      private class DeserializationContext
-      {
+      private class DeserializationContext {
          public ReleaseManifest ReleaseManifest;
 
          // Loaded by DeserializeSkipFileSystemBody

@@ -1,13 +1,10 @@
-﻿namespace Dargon.IO.RADS
-{
-   public class RiotProject
-   {
+﻿namespace Dargon.IO.RADS {
+   public class RiotProject {
       private readonly RiotProjectType projectType;
       private readonly ReleaseManifest releaseManifest;
       private readonly uint version;
 
-      public RiotProject(RiotProjectType projectType, ReleaseManifest releaseManifest, uint version)
-      {
+      public RiotProject(RiotProjectType projectType, ReleaseManifest releaseManifest, uint version) {
          this.projectType = projectType;
          this.releaseManifest = releaseManifest;
          this.version = version;

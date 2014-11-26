@@ -3,16 +3,15 @@ using ItzWarty;
 using System.IO;
 using System.Linq;
 
-namespace Dargon.IO.RADS
-{
-   public class RiotProjectLoader
-   {
+namespace Dargon.IO.RADS {
+   public class RiotProjectLoader {
       private readonly string projectsDirectoryPath;
 
-      public RiotProjectLoader(string radsPath) { projectsDirectoryPath = Path.Combine(radsPath, "projects"); }
+      public RiotProjectLoader(string radsPath) {
+         projectsDirectoryPath = Path.Combine(radsPath, "projects");
+      }
 
-      public RiotProject LoadProject(RiotProjectType projectType)
-      {
+      public RiotProject LoadProject(RiotProjectType projectType) {
          string projectName;
          if (projectType == RiotProjectType.AirClient)
             projectName = "lol_air_client";
@@ -24,8 +23,7 @@ namespace Dargon.IO.RADS
          return LoadProject(projectType, Path.Combine(projectsDirectoryPath, projectName));
       }
 
-      public RiotProject LoadProject(RiotProjectType projectType, string projectPath)
-      {
+      public RiotProject LoadProject(RiotProjectType projectType, string projectPath) {
          // - Find the RADS Project's latest release directory ------------------------------------
          var versionStringParser = new VersionStringUtilities();
          var releasesPath = Path.Combine(projectPath, "releases");
@@ -39,10 +37,9 @@ namespace Dargon.IO.RADS
          // - Load RADS Project Release Manifest and assign to RADS Project -----------------------
          var releaseManifestPath = Path.Combine(latestRelease.ReleasePath, "releasemanifest");
          var releaseManifest = new ReleaseManifestLoader().LoadFile(releaseManifestPath);
-        
+
          // - Project-Type-Specific Hacks ------------------------------------------------
-         if (projectType == RiotProjectType.AirClient)
-         {
+         if (projectType == RiotProjectType.AirClient) {
             releaseManifest.Root.__OverrideName(Path.Combine(latestRelease.ReleasePath, "deploy"));
          }
 

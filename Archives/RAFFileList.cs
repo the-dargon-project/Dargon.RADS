@@ -2,19 +2,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dargon.IO.RADS.Archives
-{
-   public class RAFFileList
-   {
+namespace Dargon.IO.RADS.Archives {
+   public class RAFFileList {
       /// <summary>
       /// Number of entries in the file list
       /// </summary>
       private UInt32 fileListCount = 0;
+
       private byte[] content = null;
       private UInt32 offsetFileListHeader = 0;
       private List<RAFFileListEntry> fileEntries = null;
-      public RAFFileList(RiotArchive riot, byte[] directoryFileContent, UInt32 offsetFileListHeader)
-      {
+
+      public RAFFileList(RiotArchive riot, byte[] directoryFileContent, UInt32 offsetFileListHeader) {
          this.content = directoryFileContent;
          this.offsetFileListHeader = offsetFileListHeader;
 
@@ -25,55 +24,50 @@ namespace Dargon.IO.RADS.Archives
          UInt32 offsetEntriesStart = offsetFileListHeader + 4;
          this.fileEntries = new List<RAFFileListEntry>();
          for (UInt32 currentOffset = offsetEntriesStart;
-             currentOffset < offsetEntriesStart + 16 * fileListCount; currentOffset += 16)
-         {
+            currentOffset < offsetEntriesStart + 16 * fileListCount; currentOffset += 16) {
             this.fileEntries.Add(new RAFFileListEntry(riot, ref directoryFileContent, currentOffset));
          }
       }
-      public List<RAFFileListEntry> GetFileEntries()
-      {
+
+      public List<RAFFileListEntry> GetFileEntries() {
          return this.fileEntries;
       }
+
       /// <summary>
       /// Finds a file entry.
       /// </summary>
       /// <param name="path">Path to </param>
       /// <param name="search"></param>
       /// <returns></returns>
-      public RAFFileListEntry GetFileEntryOrNull(string path)
-      {
+      public RAFFileListEntry GetFileEntryOrNull(string path) {
          if (path.Length > 0 && (path[0] == '/' || path[0] == '\\')) {
             path = path.Trim(new[] { '/', '\\' });
          }
 
          //string lowerPath = path.ToLower();
          List<RAFFileListEntry> fileEntries = this.GetFileEntries();
-         for (int i = 0; i < fileEntries.Count; i++)
-         {
+         for (int i = 0; i < fileEntries.Count; i++) {
             //string lowerFilename = fileEntries[i].FileName.ToLower();
 
             //if (lowerFilename == lowerPath)
-            if (fileEntries[i].FileName.Equals(path, StringComparison.InvariantCultureIgnoreCase))
-            {
+            if (fileEntries[i].FileName.Equals(path, StringComparison.InvariantCultureIgnoreCase)) {
                return fileEntries[i];
             }
          }
 
          return null;
       }
+
       /// <summary>
       /// Finds all elements with the given hash, then compares path.
       /// </summary>
-      public RAFFileListEntry GetFileEntryByHash(uint hash, string path)
-      {
+      public RAFFileListEntry GetFileEntryByHash(uint hash, string path) {
          List<RAFFileListEntry> matches = new List<RAFFileListEntry>();
          uint pathHash = RAFHashUtil.GetHash(path);
-         foreach (RAFFileListEntry entry in fileEntries)
-         {
+         foreach (RAFFileListEntry entry in fileEntries) {
             //Console.WriteLine("A " + entry.FileName);
             //Console.WriteLine("B " + path);
-            if (entry.StringNameHash == pathHash)
-            {
+            if (entry.StringNameHash == pathHash) {
                //Console.WriteLine("HASH MATCH");
                matches.Add(entry); //There are collisison, iirc.
             }
@@ -83,6 +77,7 @@ namespace Dargon.IO.RADS.Archives
                return entry;
          return null;
       }
+
       /// <summary>
       /// Finds file entries.
       /// 
@@ -93,28 +88,25 @@ namespace Dargon.IO.RADS.Archives
       /// <param name="path">Path to </param>
       /// <param name="search"></param>
       /// <returns></returns>
-      public List<RAFFileListEntry> SearchFileEntries(string partialPath)
-      {
+      public List<RAFFileListEntry> SearchFileEntries(string partialPath) {
          string lowerPath = partialPath.ToLower();
          List<RAFFileListEntry> result = new List<RAFFileListEntry>();
 
          List<RAFFileListEntry> fileEntries = this.GetFileEntries();
-         for (int i = 0; i < fileEntries.Count; i++)
-         {
+         for (int i = 0; i < fileEntries.Count; i++) {
             string lowerFilename = fileEntries[i].FileName.ToLower();
-            if (lowerFilename.EndsWith(lowerPath))
-            {
+            if (lowerFilename.EndsWith(lowerPath)) {
                result.Add(fileEntries[i]);
             }
          }
          return result;
       }
-      public void AddFileEntry(RAFFileListEntry entry)
-      {
+
+      public void AddFileEntry(RAFFileListEntry entry) {
          this.fileEntries.Add(entry);
       }
-      public void DeleteFileEntry(RAFFileListEntry entry)
-      {
+
+      public void DeleteFileEntry(RAFFileListEntry entry) {
          this.fileEntries.Remove(entry);
       }
    }

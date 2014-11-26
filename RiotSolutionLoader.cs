@@ -1,18 +1,14 @@
 ﻿using System;
 using System.IO;
 
-namespace Dargon.IO.RADS
-{
-   public class RiotSolutionLoader
-   {
-      public RiotSolution Load(string radsPath, RiotProjectType? projectTypeLimit = null)
-      {
+namespace Dargon.IO.RADS {
+   public class RiotSolutionLoader {
+      public RiotSolution Load(string radsPath, RiotProjectType? projectTypeLimit = null) {
          var solution = new RiotSolution(radsPath);
          var projectLoader = new RiotProjectLoader(radsPath);
          var projectsDirectory = Path.Combine(radsPath, "projects");
          var projectDirectories = Directory.GetDirectories(projectsDirectory);
-         foreach (var projectPath in projectDirectories)
-         {
+         foreach (var projectPath in projectDirectories) {
             var projectDirectoryInfo = new DirectoryInfo(projectPath);
             var projectName = projectDirectoryInfo.Name;
             var projectType = RiotProjectType.Unknown;

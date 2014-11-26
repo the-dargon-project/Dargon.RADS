@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dargon.IO.RADS
-{
-   public class ReleaseManifestDirectoryEntry : DargonNode, IReleaseManifestEntry
-   {
+namespace Dargon.IO.RADS {
+   public class ReleaseManifestDirectoryEntry : DargonNode, IReleaseManifestEntry {
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;
       private readonly ReleaseManifestDirectoryDescriptor m_descriptor;
@@ -14,18 +12,16 @@ namespace Dargon.IO.RADS
 
       internal ReleaseManifestDirectoryEntry(
          uint directoryId,
-         ReleaseManifest releaseManifest, 
+         ReleaseManifest releaseManifest,
          ReleaseManifestDirectoryDescriptor descriptor,
          ReleaseManifestDirectoryEntry parent)
-         : base(releaseManifest.StringTable[descriptor.NameIndex])
-      {
+         : base(releaseManifest.StringTable[descriptor.NameIndex]) {
          m_id = directoryId;
          m_releaseManifest = releaseManifest;
          m_descriptor = descriptor;
-         
+
          m_parent = parent;
-         if (m_parent != null)
-         {
+         if (m_parent != null) {
             m_parent.m_directories.Add(this);
             m_parent.AddChild(this); // TODO: Override to remove duplication
          }
@@ -76,14 +72,11 @@ namespace Dargon.IO.RADS
       // : Calculated Values :
       public IReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get { return m_directories; } }
 
-      public string Path
-      {
-         get
-         {
+      public string Path {
+         get {
             string s = this.Name;
             var currentNode = this.Parent;
-            while (currentNode != null)
-            {
+            while (currentNode != null) {
                s = currentNode.Name + "/" + s;
                currentNode = currentNode.Parent;
             }
@@ -92,15 +85,14 @@ namespace Dargon.IO.RADS
       }
 
       // - Helper Methods -------------------------------------------------------------------------
-      public ReleaseManifestFileEntry GetChildFileOrNull(string childName)
-      {
+      public ReleaseManifestFileEntry GetChildFileOrNull(string childName) {
          foreach (var file in m_files)
             if (file.Name.Equals(childName, StringComparison.OrdinalIgnoreCase))
                return file;
          return null;
       }
-      public ReleaseManifestDirectoryEntry GetChildDirectoryOrNull(string childName)
-      {
+
+      public ReleaseManifestDirectoryEntry GetChildDirectoryOrNull(string childName) {
          foreach (var dir in m_directories)
             if (dir.Name.Equals(childName, StringComparison.OrdinalIgnoreCase))
                return dir;
@@ -115,8 +107,7 @@ namespace Dargon.IO.RADS
       /// its appropriate data source.
       /// </summary>
       /// <param name="combine"></param>
-      public void __OverrideName(string nameOverride)
-      {
+      public void __OverrideName(string nameOverride) {
          this.Name = nameOverride;
       }
    }

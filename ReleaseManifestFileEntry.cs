@@ -1,30 +1,27 @@
 ﻿using System.Collections.Generic;
 
-namespace Dargon.IO.RADS
-{
+namespace Dargon.IO.RADS {
    /// <summary>
    /// Represents a file entry in a Riot Application Distribution System Release Manifest.
    /// 
    /// Warning: As no official specification of the file format has been released, certain 
    ///          properties in this class may be incorrectly named/described.
    /// </summary>
-   public class ReleaseManifestFileEntry : DargonNode
-   {
+   public class ReleaseManifestFileEntry : DargonNode {
       private static readonly ReleaseManifestFileEntry[] kEmptyFiles = new ReleaseManifestFileEntry[0];
       private static readonly ReleaseManifestDirectoryEntry[] kEmptyDirectories = new ReleaseManifestDirectoryEntry[0];
-      
+
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;
       private readonly ReleaseManifestFileEntryDescriptor m_descriptor;
       private readonly ReleaseManifestDirectoryEntry m_parent;
-      
+
       internal ReleaseManifestFileEntry(
-         uint fileId, 
-         ReleaseManifest releaseManifest, 
-         ReleaseManifestFileEntryDescriptor fileDescriptor, 
+         uint fileId,
+         ReleaseManifest releaseManifest,
+         ReleaseManifestFileEntryDescriptor fileDescriptor,
          ReleaseManifestDirectoryEntry parent)
-         : base(releaseManifest.StringTable[fileDescriptor.NameIndex])
-      {
+         : base(releaseManifest.StringTable[fileDescriptor.NameIndex]) {
          m_id = fileId;
          m_releaseManifest = releaseManifest;
          m_descriptor = fileDescriptor;
@@ -39,7 +36,7 @@ namespace Dargon.IO.RADS
       // - Public Getters -------------------------------------------------------------------------
       public IReadOnlyCollection<ReleaseManifestFileEntry> Files { get { return kEmptyFiles; } }
       public IReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get { return kEmptyDirectories; } }
-      
+
       // The RADS Release Manifest file which contains this file entry
       public ReleaseManifest ReleaseManifest { get { return m_releaseManifest; } }
 
@@ -64,14 +61,11 @@ namespace Dargon.IO.RADS
       public uint UnknownConstant2 { get { return m_descriptor.UnknownConstant2; } }
 
       // : Calculated values :
-      public string Path
-      {
-         get
-         {
+      public string Path {
+         get {
             string s = this.Name;
             var currentNode = this.Parent;
-            while (currentNode != null)
-            {
+            while (currentNode != null) {
                s = currentNode.Name + "/" + s;
                currentNode = currentNode.Parent;
             }

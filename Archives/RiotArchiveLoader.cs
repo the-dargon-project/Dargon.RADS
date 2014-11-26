@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Dargon.IO.RADS.Archives
-{
-   public class RiotArchiveLoader
-   {
+namespace Dargon.IO.RADS.Archives {
+   public class RiotArchiveLoader {
       private readonly string fileArchivesPath;
-      private Dictionary<uint, ArchiveAndDataPaths> pathsById = new Dictionary<uint, ArchiveAndDataPaths>(); 
+      private Dictionary<uint, ArchiveAndDataPaths> pathsById = new Dictionary<uint, ArchiveAndDataPaths>();
 
-      public RiotArchiveLoader(string solutionPath) { 
+      public RiotArchiveLoader(string solutionPath) {
          fileArchivesPath = Path.Combine(solutionPath, "projects", "lol_game_client", "filearchives");
          var parser = new VersionStringUtilities();
          foreach (var directory in Directory.EnumerateDirectories(fileArchivesPath)) {
@@ -27,8 +25,7 @@ namespace Dargon.IO.RADS.Archives
          }
       }
 
-      public bool TryLoadArchive(uint version, out RiotArchive archive)
-      {
+      public bool TryLoadArchive(uint version, out RiotArchive archive) {
          ArchiveAndDataPaths paths;
          if (!pathsById.TryGetValue(version, out paths)) {
             archive = null;
@@ -39,13 +36,11 @@ namespace Dargon.IO.RADS.Archives
          }
       }
 
-      private class ArchiveAndDataPaths
-      {
+      private class ArchiveAndDataPaths {
          private readonly string archivePath;
          private readonly string dataPath;
 
-         public ArchiveAndDataPaths(string archivePath, string dataPath)
-         {
+         public ArchiveAndDataPaths(string archivePath, string dataPath) {
             this.archivePath = archivePath;
             this.dataPath = dataPath;
          }

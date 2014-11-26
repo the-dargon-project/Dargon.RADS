@@ -1,10 +1,8 @@
-namespace Dargon.IO.RADS
-{
+namespace Dargon.IO.RADS {
    /// <summary>
    /// For internal intermediate representation only
    /// </summary>
-   internal class ReleaseManifestDirectoryDescriptor
-   {
+   internal class ReleaseManifestDirectoryDescriptor {
       // index of directory name in string table
       public uint NameIndex;
 

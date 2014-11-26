@@ -1,10 +1,8 @@
-namespace Dargon.IO.RADS
-{
+namespace Dargon.IO.RADS {
    /// <summary>
    /// For internal intermediate representation only
    /// </summary>
-   internal class ReleaseManifestFileEntryDescriptor
-   {
+   internal class ReleaseManifestFileEntryDescriptor {
       // index of file name in the string table index
       public uint NameIndex;
 
