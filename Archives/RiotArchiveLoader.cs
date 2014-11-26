@@ -12,7 +12,7 @@ namespace Dargon.IO.RADS.Archives
 
       public RiotArchiveLoader(string solutionPath) { 
          fileArchivesPath = Path.Combine(solutionPath, "projects", "lol_game_client", "filearchives");
-         var parser = new VersionStringParser();
+         var parser = new VersionStringUtilities();
          foreach (var directory in Directory.EnumerateDirectories(fileArchivesPath)) {
             var name = Path.GetFileName(directory);
             uint versionNumber;

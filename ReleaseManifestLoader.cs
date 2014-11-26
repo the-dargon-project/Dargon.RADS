@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using ItzWarty;
 
 namespace Dargon.IO.RADS
@@ -15,7 +16,7 @@ namespace Dargon.IO.RADS
       /// <summary>
       /// Loads a Riot Application Distribution System Release Manifest file from the given path.
       /// </summary>
-      public ReleaseManifest Load(string path)
+      public ReleaseManifest LoadFile(string path)
       {
          using (var ms = new MemoryStream(File.ReadAllBytes(path)))
          using (var reader = new BinaryReader(ms)) {
@@ -29,7 +30,22 @@ namespace Dargon.IO.RADS
 
             return rmFile;
          } // using
-      } // FromFile
+      }
+
+      public ReleaseManifest LoadProjectManifest(string radsPath, RiotProjectType projectType)
+      {
+         string projectName;
+         if (projectType == RiotProjectType.GameClient) {
+            projectName = "lol_game_client";
+         } else {
+            throw new NotImplementedException("TODO: Refactor project types into attributes");
+         }
+         var releasesPath = Path.Combine(radsPath, "projects", projectName, "releases");
+         var releasesNames = Directory.EnumerateDirectories(releasesPath, "*", SearchOption.TopDirectoryOnly);
+         var maximumRelease = releasesNames.MaxBy(new VersionStringUtilities().GetVersionNumber);
+         var releaseManifestPath = Path.Combine(releasesPath, maximumRelease, "releasemanifest");
+         return LoadFile(releaseManifestPath);
+      }
 
       /// <summary>
       /// Loads the header block of a release manifest file

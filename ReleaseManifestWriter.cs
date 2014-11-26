@@ -18,13 +18,18 @@ namespace Dargon.IO.RADS
          {
             using (var writer = new BinaryWriter(ms, Encoding.ASCII, true))
             {
-               SerializeHeader(writer);
-               SerializeDirectoryTable(writer);
-               SerializeFileTable(writer);
-               SerializeStringTable(writer);
+               Save(writer);
             }
             File.WriteAllBytes(filePath, ms.ToArray());
          }
+      }
+
+      public void Save(BinaryWriter writer)
+      {
+         SerializeHeader(writer);
+         SerializeDirectoryTable(writer);
+         SerializeFileTable(writer);
+         SerializeStringTable(writer);
       }
 
       private void SerializeHeader(BinaryWriter writer)

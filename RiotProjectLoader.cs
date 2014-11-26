@@ -27,7 +27,7 @@ namespace Dargon.IO.RADS
       public RiotProject LoadProject(RiotProjectType projectType, string projectPath)
       {
          // - Find the RADS Project's latest release directory ------------------------------------
-         var versionStringParser = new VersionStringParser();
+         var versionStringParser = new VersionStringUtilities();
          var releasesPath = Path.Combine(projectPath, "releases");
          var releases = from releasePath in Directory.GetDirectories(releasesPath)
                         let versionString = versionStringParser.GetVersionString(releasePath)
@@ -38,7 +38,7 @@ namespace Dargon.IO.RADS
 
          // - Load RADS Project Release Manifest and assign to RADS Project -----------------------
          var releaseManifestPath = Path.Combine(latestRelease.ReleasePath, "releasemanifest");
-         var releaseManifest = new ReleaseManifestLoader().Load(releaseManifestPath);
+         var releaseManifest = new ReleaseManifestLoader().LoadFile(releaseManifestPath);
         
          // - Project-Type-Specific Hacks ------------------------------------------------
          if (projectType == RiotProjectType.AirClient)
