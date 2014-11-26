@@ -57,8 +57,8 @@ namespace Dargon.IO.RADS {
       public uint CompressedSize { get { return m_descriptor.CompressedSize; } set { m_descriptor.CompressedSize = value; } }
       public uint Checksum2 { get { return m_descriptor.Checksum2; } }
       public ushort PatcherEntityType { get { return m_descriptor.PatcherEntityType; } }
-      public uint UnknownConstant1 { get { return m_descriptor.UnknownConstant1; } }
-      public uint UnknownConstant2 { get { return m_descriptor.UnknownConstant2; } }
+      public byte UnknownConstant1 { get { return m_descriptor.UnknownConstant1; } }
+      public byte UnknownConstant2 { get { return m_descriptor.UnknownConstant2; } }
 
       // : Calculated values :
       public string Path {
