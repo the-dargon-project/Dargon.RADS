@@ -41,7 +41,10 @@ namespace Dargon.IO.RADS {
 
          // - Project-Type-Specific Hacks ------------------------------------------------
          if (projectType == RiotProjectType.AirClient) {
-            releaseManifest.Root.__OverrideName(Path.Combine(latestRelease.ReleasePath, "deploy"));
+            var rootEntry = releaseManifest.Root;
+            var overloadName = Path.Combine(latestRelease.ReleasePath, "deploy");
+            var overload = new ReleaseManifestRootDirectoryOverload((ReleaseManifestDirectoryEntry)rootEntry, overloadName);
+            releaseManifest.Root = overload;
          }
 
          return new RiotProject(projectType, releaseManifest, latestRelease.VersionNumber);

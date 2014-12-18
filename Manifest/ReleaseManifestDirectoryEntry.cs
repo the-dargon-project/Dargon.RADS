@@ -1,56 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dargon.IO.RADS.Utilities;
 
 namespace Dargon.IO.RADS.Manifest {
-   public class ReleaseManifestDirectoryEntry : DargonNode, IReleaseManifestEntry {
+   public class ReleaseManifestDirectoryEntry : IReleaseManifestDirectoryEntry, IReadableDargonNode {
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;
       private readonly ReleaseManifestDirectoryDescriptor m_descriptor;
-      private readonly ReleaseManifestDirectoryEntry m_parent;
-      private readonly List<ReleaseManifestDirectoryEntry> m_directories;
+      internal IReleaseManifestDirectoryEntry m_parent;
+      internal readonly List<ReleaseManifestDirectoryEntry> m_directories;
       internal readonly List<ReleaseManifestFileEntry> m_files;
 
       internal ReleaseManifestDirectoryEntry(
          uint directoryId,
          ReleaseManifest releaseManifest,
          ReleaseManifestDirectoryDescriptor descriptor,
-         ReleaseManifestDirectoryEntry parent)
-         : base(releaseManifest.StringTable[descriptor.NameIndex]) {
+         ReleaseManifestDirectoryEntry parent
+      ) { 
          m_id = directoryId;
          m_releaseManifest = releaseManifest;
          m_descriptor = descriptor;
 
          m_parent = parent;
-         if (m_parent != null) {
-            m_parent.m_directories.Add(this);
-            m_parent.AddChild(this); // TODO: Override to remove duplication
+         if (parent != null) {
+            parent.m_directories.Add(this);
          }
 
          m_directories = new List<ReleaseManifestDirectoryEntry>((int)descriptor.SubdirectoryCount);
          m_files = new List<ReleaseManifestFileEntry>((int)descriptor.FileCount);
-
-         this.Name = releaseManifest.StringTable[descriptor.NameIndex];
       }
 
       // - Public Getters -------------------------------------------------------------------------
-      /// <summary>
-      /// The Release Manifest file which contains this directory entry
-      /// </summary>
+      public string Name { get { return m_releaseManifest.StringTable[m_descriptor.NameIndex]; } }
       public ReleaseManifest ReleaseManifest { get { return m_releaseManifest; } }
+      public IReleaseManifestDirectoryEntry Parent { get { return m_parent; } }
+      public IReadOnlyList<IReadableDargonNode> Children { get { return new ConcatList<IReadableDargonNode>(m_directories, m_files); } }
 
+      // : Release Manifest Concepts :
       /// <summary>
       /// The unique identifier of our directory entry in the release manifest.
       /// 
       /// During deserialization, this was the index of our directory entry in the directory table.
       /// </summary>
       public uint DirectoryId { get { return m_id; } }
-
-      /// <summary>
-      /// The parent directory of this Release Manifest file entry
-      /// 
-      /// If this node is the root node, this value can be null.
-      /// </summary>
-      public ReleaseManifestDirectoryEntry Parent { get { return m_parent; } }
 
       /// <summary>
       /// The files contained in our release manifest directory
@@ -70,19 +62,7 @@ namespace Dargon.IO.RADS.Manifest {
       public uint FileCount { get { return m_descriptor.FileCount; } }
 
       // : Calculated Values :
-      public IReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get { return m_directories; } }
-
-      public string Path {
-         get {
-            string s = this.Name;
-            var currentNode = this.Parent;
-            while (currentNode != null) {
-               s = currentNode.Name + "/" + s;
-               currentNode = currentNode.Parent;
-            }
-            return s;
-         }
-      }
+      public IReadOnlyCollection<IReleaseManifestDirectoryEntry> Directories { get { return m_directories; } }
 
       // - Helper Methods -------------------------------------------------------------------------
       public ReleaseManifestFileEntry GetChildFileOrNull(string childName) {
@@ -99,16 +79,11 @@ namespace Dargon.IO.RADS.Manifest {
          return null;
       }
 
-      // - HACKS ----------------------------------------------------------------------------------
-      /// <summary>
-      /// Overrides the name of the Release Manifest Directory Entry.
-      /// This method is only applicable to the root node and the changes are not applied when the
-      /// Release Manifest is saved; this hack exists so that ComputePath() of a node returns
-      /// its appropriate data source.
-      /// </summary>
-      /// <param name="combine"></param>
-      public void __OverrideName(string nameOverride) {
-         this.Name = nameOverride;
+      // : IReadableDargonNode Implementation :
+      IReadableDargonNode IReadableDargonNode.Parent { get { return m_parent; } }
+      IReadOnlyList<IReadableDargonNode> IReadableDargonNode.Children { get { return new ConcatList<IReadableDargonNode>(m_directories, m_files); } }
+      public T GetComponentOrNull<T>() {
+         return default(T);
       }
    }
 }

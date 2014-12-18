@@ -5,7 +5,7 @@ namespace Dargon.IO.RADS.Manifest {
       public ReleaseManifestHeader Header { get; internal set; }
       public ReadOnlyCollection<ReleaseManifestFileEntry> Files { get; internal set; }
       public ReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get; internal set; }
-      public ReleaseManifestDirectoryEntry Root { get; internal set; }
+      public IReleaseManifestDirectoryEntry Root { get; internal set; }
       public ReleaseManifestStringTable StringTable { get; internal set; }
 
       internal ReleaseManifest() {

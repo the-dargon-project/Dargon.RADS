@@ -101,14 +101,14 @@ namespace Dargon.IO.RADS.Manifest {
          reader.BaseStream.Position = context.DirectoryTableDataOffset;
          context.DirectoryDescriptors = new ReleaseManifestDirectoryDescriptor[context.DirectoryTableCount];
          context.FileParentTable = new ReleaseManifestDirectoryEntry[context.FileTableCount];
-         context.DirectoryTable = new ReleaseManifestDirectoryEntry[context.DirectoryTableCount];
+         context.directoryTable = new ReleaseManifestDirectoryEntry[context.DirectoryTableCount];
 
          for (var i = 0; i < context.DirectoryTableCount; i++)
             context.DirectoryDescriptors[i] = reader.ReadRMDirectoryDescriptor();
 
          DeserializeTreeifyDirectoryDescriptor(0, context);
-         manifest.Directories = new ReadOnlyCollection<ReleaseManifestDirectoryEntry>(context.DirectoryTable);
-         manifest.Root = context.DirectoryTable[0];
+         manifest.Directories = new ReadOnlyCollection<ReleaseManifestDirectoryEntry>(context.directoryTable);
+         manifest.Root = context.directoryTable[0];
 
          // - Place the File Descriptors into our tree---------------------------------------------
          reader.BaseStream.Position = context.FileTableDataOffset;
@@ -133,7 +133,7 @@ namespace Dargon.IO.RADS.Manifest {
          // construct node at index
          var directoryDescriptor = context.DirectoryDescriptors[directoryId];
          var directoryNode = new ReleaseManifestDirectoryEntry(directoryId, context.ReleaseManifest, directoryDescriptor, parent);
-         context.DirectoryTable[directoryId] = directoryNode;
+         context.directoryTable[directoryId] = directoryNode;
 
          // associate with directory's files
          // The if statement stops us from setting lastFileId to UINT32.MAX when we are
@@ -164,7 +164,7 @@ namespace Dargon.IO.RADS.Manifest {
          // Loaded by DeserializeFileSystemBody calls to DeserializeTreeifyDirectoryDescriptor
          public ReleaseManifestDirectoryDescriptor[] DirectoryDescriptors;
          public ReleaseManifestDirectoryEntry[] FileParentTable;
-         public ReleaseManifestDirectoryEntry[] DirectoryTable;
+         public ReleaseManifestDirectoryEntry[] directoryTable;
       }
    }
 }

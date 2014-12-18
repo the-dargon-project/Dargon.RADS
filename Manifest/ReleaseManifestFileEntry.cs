@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dargon.IO.RADS.Manifest {
    /// <summary>
@@ -7,33 +8,32 @@ namespace Dargon.IO.RADS.Manifest {
    /// Warning: As no official specification of the file format has been released, certain 
    ///          properties in this class may be incorrectly named/described.
    /// </summary>
-   public class ReleaseManifestFileEntry : DargonNode {
+   public class ReleaseManifestFileEntry : IReadableDargonNode {
+      private static readonly IReadOnlyList<IWritableDargonNode> kEmptyChildren = new IWritableDargonNode[0]; 
       private static readonly ReleaseManifestFileEntry[] kEmptyFiles = new ReleaseManifestFileEntry[0];
       private static readonly ReleaseManifestDirectoryEntry[] kEmptyDirectories = new ReleaseManifestDirectoryEntry[0];
 
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;
       private readonly ReleaseManifestFileEntryDescriptor m_descriptor;
-      private readonly ReleaseManifestDirectoryEntry m_parent;
+      internal IReleaseManifestDirectoryEntry m_parent;
 
       internal ReleaseManifestFileEntry(
-         uint fileId,
+         uint fileId, 
          ReleaseManifest releaseManifest,
          ReleaseManifestFileEntryDescriptor fileDescriptor,
-         ReleaseManifestDirectoryEntry parent)
-         : base(releaseManifest.StringTable[fileDescriptor.NameIndex]) {
+         ReleaseManifestDirectoryEntry parent
+      ) {
          m_id = fileId;
          m_releaseManifest = releaseManifest;
          m_descriptor = fileDescriptor;
          m_parent = parent;
-         m_parent.m_files.Add(this);
-         m_parent.AddChild(this); // TODO: Override to remove duplication
-
-         Name = m_releaseManifest.StringTable[NameStringTableIndex];
+         parent.m_files.Add(this);
       }
 
 
       // - Public Getters -------------------------------------------------------------------------
+      public string Name { get { return m_releaseManifest.StringTable[m_descriptor.NameIndex]; } set { throw new InvalidOperationException(); } }
       public IReadOnlyCollection<ReleaseManifestFileEntry> Files { get { return kEmptyFiles; } }
       public IReadOnlyCollection<ReleaseManifestDirectoryEntry> Directories { get { return kEmptyDirectories; } }
 
@@ -45,7 +45,7 @@ namespace Dargon.IO.RADS.Manifest {
       public uint FileId { get { return m_id; } }
 
       // The parent directory of this Release Manifest file entry (always non-null)
-      public ReleaseManifestDirectoryEntry Parent { get { return m_parent; } }
+      public new IReleaseManifestDirectoryEntry Parent { get { return m_parent; } }
 
       // : POD Structure Getters :
       public uint NameStringTableIndex { get { return m_descriptor.NameIndex; } }
@@ -60,17 +60,11 @@ namespace Dargon.IO.RADS.Manifest {
       public byte UnknownConstant1 { get { return m_descriptor.UnknownConstant1; } }
       public byte UnknownConstant2 { get { return m_descriptor.UnknownConstant2; } }
 
-      // : Calculated values :
-      public string Path {
-         get {
-            string s = this.Name;
-            var currentNode = this.Parent;
-            while (currentNode != null) {
-               s = currentNode.Name + "/" + s;
-               currentNode = currentNode.Parent;
-            }
-            return s;
-         }
+      // IReadableDargonNode calls
+      IReadableDargonNode IReadableDargonNode.Parent { get { return m_parent; } }
+      IReadOnlyList<IReadableDargonNode> IReadableDargonNode.Children { get { return kEmptyChildren; } }
+      public T GetComponentOrNull<T>() {
+         return default(T);
       }
    }
 }
