@@ -16,7 +16,7 @@ namespace Dargon.IO.RADS.Manifest {
       public ReleaseManifest LoadFile(string path) {
          using (var ms = new MemoryStream(File.ReadAllBytes(path)))
          using (var reader = new BinaryReader(ms)) {
-            var rmFile = new ReleaseManifest();
+            var rmFile = new ReleaseManifest(path);
             var context = new DeserializationContext() { ReleaseManifest = rmFile };
 
             DeserializeHeader(reader, rmFile, context);
