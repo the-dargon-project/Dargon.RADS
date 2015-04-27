@@ -2,7 +2,7 @@
 using System.IO;
 using zlib;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    /// <summary>
    /// 8 May 2011, Setters no longer actually write to RAF DIrectory file in memory copies
    /// Instead, you must call Archive.SaveDirectoryFile();

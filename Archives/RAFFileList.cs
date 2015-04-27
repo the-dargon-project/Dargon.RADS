@@ -1,8 +1,8 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ItzWarty;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public class RAFFileList {
       /// <summary>
       /// Number of entries in the file list

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.RADS {
    [Flags]
    public enum RiotProjectType : uint {
       Unknown           = 0x00000001U,

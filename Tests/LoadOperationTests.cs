@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dargon.IO.RADS.Manifest;
+using Dargon.RADS;
+using Dargon.RADS.Manifest;
 using NMockito;
 using Xunit;
 
 namespace Dargon.IO.RADS {
    public class LoadOperationTests : NMockitoInstance {
-      private const string kRadsDirectory = @"C:\Riot Games\League of Legends\RADS";
+      private const string kRadsDirectory = @"V:\Riot Games\League of Legends\RADS";
 
       [Fact]
       public void LoadGameSolutionTest() {
@@ -59,7 +60,7 @@ namespace Dargon.IO.RADS {
          var manifestLoader = new ReleaseManifestLoader();
          Debug.WriteLine("Loaded Manifest Loader in: " + stopwatch.ElapsedMilliseconds);
 
-         var manifest = manifestLoader.LoadFile(@"C:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.1.7\releasemanifest");
+         var manifest = manifestLoader.LoadFile(@"V:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.1.25\releasemanifest");
          Debug.WriteLine("Loaded Manifest in: " + stopwatch.ElapsedMilliseconds);
 
          var tree = manifest.Root;

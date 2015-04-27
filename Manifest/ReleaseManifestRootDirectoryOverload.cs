@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Dargon.IO;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public class ReleaseManifestRootDirectoryOverload : IReleaseManifestDirectoryEntry, IReadableDargonNode {
       private readonly ReleaseManifestDirectoryEntry directory;
       private readonly string name;

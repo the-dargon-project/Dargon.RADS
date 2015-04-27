@@ -1,10 +1,10 @@
-﻿using Dargon.IO.RADS.Manifest;
-using ItzWarty;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using Dargon.RADS.Manifest;
+using ItzWarty;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.RADS {
    public class RiotProjectLoader {
       private readonly string projectsDirectoryPath;
 

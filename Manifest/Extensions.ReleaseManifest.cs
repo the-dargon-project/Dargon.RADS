@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public static class ReleaseManifestIoExtensions {
       // For internal intermediate representation use only.
       internal static ReleaseManifestDirectoryDescriptor ReadRMDirectoryDescriptor(this BinaryReader reader) {

@@ -1,4 +1,4 @@
-﻿namespace Dargon.IO.RADS.Archives {
+﻿namespace Dargon.RADS.Archives {
    public static class RAFUtil {
       public static string FormatPathToRAFPath(string path) {
          path = path.Replace("\\", "/"); //It is prettier.

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dargon.IO;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    /// <summary>
    /// Represents a file entry in a Riot Application Distribution System Release Manifest.
    /// 

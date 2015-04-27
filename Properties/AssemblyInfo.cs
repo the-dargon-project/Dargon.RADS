@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("librads")]
-[assembly: AssemblyDescription("Riot Archive Distribution System file format support.")]
+[assembly: AssemblyTitle("Dargon.RADS")]
+[assembly: AssemblyDescription("Riot Archive Distribution System file format support (librads).")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The Dargon Project")]
-[assembly: AssemblyProduct("librads")]
+[assembly: AssemblyProduct("Dargon.RADS")]
 [assembly: AssemblyCopyright("Copyright © ItzWarty 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

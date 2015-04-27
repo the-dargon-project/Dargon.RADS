@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.RADS {
    public class RiotSolution {
       private readonly string path;
       private readonly Dictionary<RiotProjectType, RiotProject> projectsByType = new Dictionary<RiotProjectType, RiotProject>();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Dargon.IO;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public interface IReleaseManifestDirectoryEntry : IReadableDargonNode {
       new string Name { get; }
       IReadOnlyCollection<ReleaseManifestFileEntry> Files { get; }

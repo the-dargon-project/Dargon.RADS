@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Dargon.IO.RADS.Utilities {
+namespace Dargon.RADS.Utilities {
    public class ConcatList<T> : IReadOnlyList<T> {
       private readonly IReadOnlyList<T> a;
       private readonly IReadOnlyList<T> b;

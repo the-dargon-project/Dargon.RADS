@@ -7,8 +7,8 @@
     <ProjectGuid>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.IO.RADS</RootNamespace>
-    <AssemblyName>librads</AssemblyName>
+    <RootNamespace>Dargon.RADS</RootNamespace>
+    <AssemblyName>Dargon.RADS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.</SolutionDir>
@@ -35,23 +35,21 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libdargon.utilities">
-      <HintPath>packages\libdargon.utilities.0.0.0\lib\net45\libdargon.utilities.dll</HintPath>
+    <Reference Include="Dargon.IO">
+      <HintPath>packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
     </Reference>
-    <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\libdnode.0.0.0\lib\net45\libdnode.dll</HintPath>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\libdargon.utilities.0.0.0\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>packages\libdnode.0.0.0\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\libdnode.0.0.0\lib\net45\NLog.dll</HintPath>
+      <HintPath>packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,7 +58,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="zlib.net">
+    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>

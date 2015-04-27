@@ -1,9 +1,9 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ItzWarty;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public class RAFStringTable {
       private RiotArchive riot = null;
       private byte[] directoryFileContent = null;

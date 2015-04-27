@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
+using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using ItzWarty;
 using ItzWarty.Collections;
 using NMockito;
@@ -13,7 +14,7 @@ namespace Dargon.IO.RADS {
       [Fact]
       public void ReleaseManifestDummiesTest() {
          var archiveId = 256 * 1 + 7;
-         var firstArchive = @"V:\Riot Games\League of Legends\RADS\projects\lol_game_client\filearchives\0.0.1.7\Archive_2.raf";
+         var firstArchive = @"V:\Riot Games\League of Legends\RADS\projects\lol_game_client\filearchives\0.0.1.25\Archive_2.raf";
          var archive = new RiotArchive(firstArchive, firstArchive + ".dat");
 
          var solution = new RiotSolutionLoader().Load(@"V:\Riot Games\League of Legends\RADS", RiotProjectType.GameClient);

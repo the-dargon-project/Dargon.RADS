@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librads", "librads.csproj", "{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.RADS", "Dargon.RADS.csproj", "{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librads.Tests", "Tests\librads.Tests.csproj", "{B1AE0734-2F3F-426C-ACFF-ADE91C74E04F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.RADS.Tests", "Tests\Dargon.RADS.Tests.csproj", "{B1AE0734-2F3F-426C-ACFF-ADE91C74E04F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

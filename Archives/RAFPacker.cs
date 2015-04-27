@@ -1,11 +1,11 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using ItzWarty;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public class RAFPacker {
       private StreamWriter ostream = null;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public class ReleaseManifest {
       private readonly string path;
 

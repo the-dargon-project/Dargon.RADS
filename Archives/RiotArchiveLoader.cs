@@ -1,10 +1,10 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ItzWarty;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public class RiotArchiveLoader {
       private readonly string fileArchivesPath;
       private Dictionary<uint, IReadOnlyList<RafDatPair>> pairCollectionsById = new Dictionary<uint, IReadOnlyList<RafDatPair>>();

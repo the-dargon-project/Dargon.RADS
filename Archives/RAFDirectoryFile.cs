@@ -1,9 +1,9 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ItzWarty;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public unsafe class RAFDirectoryFile {
       /// <summary>
       /// Magic value used to identify the file type, must be 0x18BE0EF0

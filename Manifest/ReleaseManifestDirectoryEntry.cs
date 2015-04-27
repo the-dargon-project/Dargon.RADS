@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dargon.IO.RADS.Utilities;
+using Dargon.IO;
+using Dargon.RADS.Utilities;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public class ReleaseManifestDirectoryEntry : IReleaseManifestDirectoryEntry, IReadableDargonNode {
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;

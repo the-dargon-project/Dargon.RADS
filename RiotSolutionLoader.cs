@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Dargon.IO.RADS {
+namespace Dargon.RADS {
    public class RiotSolutionLoader {
       public RiotSolution Load(string radsPath, RiotProjectType? projectTypeLimit = null) {
          var solution = new RiotSolution(radsPath);

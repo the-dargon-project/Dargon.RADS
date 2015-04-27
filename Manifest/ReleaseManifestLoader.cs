@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using ItzWarty;
 
-namespace Dargon.IO.RADS.Manifest {
+namespace Dargon.RADS.Manifest {
    public class ReleaseManifestLoader {
       // - constants ------------------------------------------------------------------------------
       private const int kDirectoryEntrySize = sizeof(UInt32) * 5;

@@ -1,10 +1,10 @@
-﻿using ItzWarty;
-using System;
+﻿using System;
 using System.IO;
+using ItzWarty;
 
 // Formerly RAFArchive from 8 May 2011 ~~ItzWarty
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    public class RiotArchive {
       private FileStream dataFileStream = null;
       private RAFDirectoryFile directoryFile = null;

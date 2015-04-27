@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dargon.IO.RADS.Archives {
+namespace Dargon.RADS.Archives {
    /// <summary>
    /// Manages the handling of hashes for RAF Strings, which is calculated in an unknown
    /// matter at the moment.
