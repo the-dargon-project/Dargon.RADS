@@ -60,7 +60,7 @@ namespace Dargon.IO.RADS {
          var manifestLoader = new ReleaseManifestLoader();
          Debug.WriteLine("Loaded Manifest Loader in: " + stopwatch.ElapsedMilliseconds);
 
-         var manifest = manifestLoader.LoadFile(@"V:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.1.25\releasemanifest");
+         var manifest = manifestLoader.LoadFile(@"V:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.1.53\releasemanifest");
          Debug.WriteLine("Loaded Manifest in: " + stopwatch.ElapsedMilliseconds);
 
          var tree = manifest.Root;
