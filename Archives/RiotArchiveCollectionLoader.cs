@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using ItzWarty;
 
 namespace Dargon.RADS.Archives {
    public class RiotArchiveCollectionLoader {
-      private readonly string radsPath;
+      private readonly RiotArchiveLoader riotArchiveLoader = new RiotArchiveLoader();
       private readonly string fileArchivesPath;
 
-      public RiotArchiveCollectionLoader(string radsPath) {
-         this.radsPath = radsPath;
-         this.fileArchivesPath = Path.Combine(radsPath, "projects", "lol_game_client", "filearchives");
+      internal RiotArchiveCollectionLoader(string fileArchivesPath) {
+         this.fileArchivesPath = fileArchivesPath;
       }
 
       public bool TryLoadArchives(uint version, out IReadOnlyList<RiotArchive> loadedArchives) {
@@ -20,6 +16,7 @@ namespace Dargon.RADS.Archives {
          var versionPath = Path.Combine(fileArchivesPath, versionString);
 
          if (!Directory.Exists(versionPath)) {
+            Console.WriteLine("DNE: " + versionPath);
             loadedArchives = null;
             return false;
          }
@@ -30,10 +27,22 @@ namespace Dargon.RADS.Archives {
          foreach (var indexFilePath in indexFilePaths) {
             var datPath = indexFilePath + ".dat";
             if (!File.Exists(datPath)) continue;
-            RiotArchive loadedArchive;
+            archives.Add(riotArchiveLoader.Load(indexFilePath));
          }
          loadedArchives = archives;
          return true;
       }
+
+      public IReadOnlyList<RiotArchive> LoadArchives(uint version) {
+         IReadOnlyList<RiotArchive> archives;
+         if (!TryLoadArchives(version, out archives)) {
+            throw new InvalidOperationException($"Failed to load archives of version {version}.");
+         }
+         return archives;
+      }
+
+      public static RiotArchiveCollectionLoader FromRadsPath(string radsPath) => FromFileArchivesPath(Path.Combine(radsPath, "projects", "lol_game_client", "filearchives"));
+
+      public static RiotArchiveCollectionLoader FromFileArchivesPath(string fileArchivesPath) => new RiotArchiveCollectionLoader(fileArchivesPath);
    }
 }

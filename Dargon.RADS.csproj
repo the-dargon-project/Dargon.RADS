@@ -63,8 +63,12 @@
     <Compile Include="Archives\RafHeader.cs" />
     <Compile Include="Archives\RafEntry.cs" />
     <Compile Include="Archives\RafUtil.cs" />
+    <Compile Include="Archives\RiotArchiveCollectionCache.cs" />
     <Compile Include="Archives\RiotArchiveCollectionLoader.cs" />
+    <Compile Include="Archives\RafExtensions.cs" />
     <Compile Include="Archives\RiotArchiveLoader.cs" />
+    <Compile Include="Manifest\Utilities\MutableDargonNodeWithLazyDataStream.cs" />
+    <Compile Include="Manifest\ReleaseManifestDataStreamComponentFactory.cs" />
     <Compile Include="Utilities\ConcatList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Manifest\ReleaseManifest.cs" />

@@ -2,21 +2,12 @@
 
 namespace Dargon.RADS {
    public class RiotSolution {
-      private readonly string path;
-      private readonly Dictionary<RiotProjectType, RiotProject> projectsByType = new Dictionary<RiotProjectType, RiotProject>();
-
-      internal RiotSolution(string path) {
-         this.path = path;
+      public RiotSolution(string path, IReadOnlyDictionary<RiotProjectType, RiotProject> projectsByType) {
+         Path = path;
+         ProjectsByType = projectsByType;
       }
 
-      // - Public Getters - Solution Properties ---------------------------------------------------
-      public IReadOnlyDictionary<RiotProjectType, RiotProject> ProjectsByType { get { return projectsByType; } }
-      public string Path { get { return path; } }
-
-      // - Internal Methods -----------------------------------------------------------------------
-      // :: Solution Loading ::
-      internal void AddProject(RiotProject project) {
-         projectsByType.Add(project.ProjectProjectType, project);
-      }
+      public string Path { get; }
+      public IReadOnlyDictionary<RiotProjectType, RiotProject> ProjectsByType { get; }
    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using Dargon.IO;
+using Dargon.RADS.Manifest.Utilities;
 using ItzWarty;
 
 namespace Dargon.RADS.Manifest {
@@ -14,7 +15,8 @@ namespace Dargon.RADS.Manifest {
       /// <summary>
       /// Loads a Riot Application Distribution System Release Manifest file from the given path.
       /// </summary>
-      public ReleaseManifest LoadFile(string path) {
+      public ReleaseManifest LoadFile(string path, ReleaseManifestDataStreamComponentFactory dataStreamComponentFactory = null) {
+         dataStreamComponentFactory = dataStreamComponentFactory ?? new NullReleaseManifestDataStreamComponentFactoryImpl();
          using (var ms = new MemoryStream(File.ReadAllBytes(path)))
          using (var reader = new BinaryReader(ms)) {
             var rmFile = new ReleaseManifest(path);
@@ -23,7 +25,7 @@ namespace Dargon.RADS.Manifest {
             DeserializeHeader(reader, rmFile, context);
             DeserializeSkipFileSystemBody(reader, rmFile, context);
             DeserializeStringTable(reader, rmFile, context);
-            DeserializeFileSystemBody(reader, rmFile, context);
+            DeserializeFileSystemBody(reader, rmFile, context, dataStreamComponentFactory);
 
             return rmFile;
          } // using
@@ -94,10 +96,7 @@ namespace Dargon.RADS.Manifest {
       /// <summary>
       /// Deserializes the filesystem portion (directory and files) of a release manifest file.
       /// </summary>
-      private void DeserializeFileSystemBody(
-         BinaryReader reader,
-         ReleaseManifest manifest,
-         DeserializationContext context) {
+      private void DeserializeFileSystemBody(BinaryReader reader, ReleaseManifest manifest, DeserializationContext context, ReleaseManifestDataStreamComponentFactory dataStreamComponentFactory) {
          // - First load the directory block and treeify it ---------------------------------------
          reader.BaseStream.Position = context.DirectoryTableDataOffset;
          context.DirectoryDescriptors = new ReleaseManifestDirectoryDescriptor[context.DirectoryTableCount];
@@ -116,7 +115,9 @@ namespace Dargon.RADS.Manifest {
          var files = new WritableDargonNode[context.FileTableCount];
          for (var fileId = 0U; fileId < context.FileTableCount; fileId++) {
             var fileDescriptor = reader.ReadRMFileEntryDescriptor();
-            var node = new MutableDargonNodeImpl(manifest.StringTable[fileDescriptor.NameIndex]);
+            var node = new MutableDargonNodeWithLazyDataStream(
+               manifest.StringTable[fileDescriptor.NameIndex],
+               dataStreamComponentFactory.Create);
             node.AddComponent(fileDescriptor);
             context.FileParentTable[fileId].AddChild(node);
             files[fileId] = node;
