@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Dargon.IO;
 
 namespace Dargon.RADS.Manifest {
-   public class ReleaseManifestRootDirectoryOverload : IReleaseManifestDirectoryEntry, IReadableDargonNode {
+   public class ReleaseManifestRootDirectoryOverload : IReleaseManifestDirectoryEntry, ReadableDargonNode {
       private readonly ReleaseManifestDirectoryEntry directory;
       private readonly string name;
 
@@ -21,9 +22,13 @@ namespace Dargon.RADS.Manifest {
 
       // IReadableDargonNode Impl: 
       public string Name { get { return name; } }
-      IReadableDargonNode IReadableDargonNode.Parent { get { return null; } }
-      public IReadOnlyList<IReadableDargonNode> Children { get { return directory.Children; } }
+      ReadableDargonNode ReadableDargonNode.Parent { get { return null; } }
+      public IReadOnlyCollection<ReadableDargonNode> Children { get { return directory.Children; } }
       public T GetComponentOrNull<T>() { return directory.GetComponentOrNull<T>(); }
+      public bool TryGetChild(string name, out ReadableDargonNode child) {
+         child = Children.FirstOrDefault(x => x.NameEquals(name));
+         return child != null;
+      }
 
       // IReleaseManifestEntry Impl: 
       public IReleaseManifestDirectoryEntry Parent { get { return null; } }

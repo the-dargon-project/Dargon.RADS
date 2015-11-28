@@ -9,8 +9,8 @@ namespace Dargon.RADS.Manifest {
    /// Warning: As no official specification of the file format has been released, certain 
    ///          properties in this class may be incorrectly named/described.
    /// </summary>
-   public class ReleaseManifestFileEntry : IReadableDargonNode {
-      private static readonly IReadOnlyList<IWritableDargonNode> kEmptyChildren = new IWritableDargonNode[0]; 
+   public class ReleaseManifestFileEntry : ReadableDargonNode {
+      private static readonly IReadOnlyList<WritableDargonNode> kEmptyChildren = new WritableDargonNode[0]; 
       private static readonly ReleaseManifestFileEntry[] kEmptyFiles = new ReleaseManifestFileEntry[0];
       private static readonly ReleaseManifestDirectoryEntry[] kEmptyDirectories = new ReleaseManifestDirectoryEntry[0];
 
@@ -62,10 +62,14 @@ namespace Dargon.RADS.Manifest {
       public byte UnknownConstant2 { get { return m_descriptor.UnknownConstant2; } }
 
       // IReadableDargonNode calls
-      IReadableDargonNode IReadableDargonNode.Parent { get { return m_parent; } }
-      IReadOnlyList<IReadableDargonNode> IReadableDargonNode.Children { get { return kEmptyChildren; } }
+      ReadableDargonNode ReadableDargonNode.Parent { get { return m_parent; } }
+      IReadOnlyCollection<ReadableDargonNode> ReadableDargonNode.Children { get { return kEmptyChildren; } }
       public T GetComponentOrNull<T>() {
          return default(T);
+      }
+      public bool TryGetChild(string name, out ReadableDargonNode child) {
+         child = null;
+         return false;
       }
    }
 }

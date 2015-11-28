@@ -88,7 +88,7 @@ namespace Dargon.IO.RADS {
          DumpTree(tree);
       }
 
-      private void DumpTree(IReadableDargonNode tree) {
+      private void DumpTree(ReadableDargonNode tree) {
          Console.WriteLine(tree.GetPath());
          foreach (var node in tree.Children) {
             DumpTree(node);

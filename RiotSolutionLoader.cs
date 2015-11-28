@@ -22,6 +22,8 @@ namespace Dargon.RADS {
                projectType = RiotProjectType.GameClientConfig;
             else if (projectName.Equals("lol_launcher", StringComparison.OrdinalIgnoreCase))
                projectType = RiotProjectType.Launcher;
+            else if (projectName.Equals("lol_patcher", StringComparison.OrdinalIgnoreCase))
+               projectType = RiotProjectType.Patcher;
 
             if (projectTypeLimit == null || projectTypeLimit.Value.HasFlag(projectType)) {
                solution.AddProject(projectLoader.LoadProject(projectType, projectPath));

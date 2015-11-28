@@ -2,7 +2,7 @@
 using Dargon.IO;
 
 namespace Dargon.RADS.Manifest {
-   public interface IReleaseManifestDirectoryEntry : IReadableDargonNode {
+   public interface IReleaseManifestDirectoryEntry : ReadableDargonNode {
       new string Name { get; }
       IReadOnlyCollection<ReleaseManifestFileEntry> Files { get; }
       IReadOnlyCollection<IReleaseManifestDirectoryEntry> Directories { get; }

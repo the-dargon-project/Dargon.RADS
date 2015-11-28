@@ -8,6 +8,7 @@ namespace Dargon.RADS {
       AirClientConfig   = 0x00000004U,
       GameClient        = 0x00000008U,
       GameClientConfig  = 0x00000010U,
-      Launcher          = 0x00000020U
+      Launcher          = 0x00000020U,
+      Patcher           = 0x00000040U
    }
 }

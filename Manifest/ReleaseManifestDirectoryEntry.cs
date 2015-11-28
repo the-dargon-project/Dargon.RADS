@@ -4,7 +4,7 @@ using Dargon.IO;
 using Dargon.RADS.Utilities;
 
 namespace Dargon.RADS.Manifest {
-   public class ReleaseManifestDirectoryEntry : IReleaseManifestDirectoryEntry, IReadableDargonNode {
+   public class ReleaseManifestDirectoryEntry : IReleaseManifestDirectoryEntry, ReadableDargonNode {
       private readonly uint m_id;
       private readonly ReleaseManifest m_releaseManifest;
       private readonly ReleaseManifestDirectoryDescriptor m_descriptor;
@@ -35,7 +35,7 @@ namespace Dargon.RADS.Manifest {
       public string Name { get { return m_releaseManifest.StringTable[m_descriptor.NameIndex]; } }
       public ReleaseManifest ReleaseManifest { get { return m_releaseManifest; } }
       public IReleaseManifestDirectoryEntry Parent { get { return m_parent; } }
-      public IReadOnlyList<IReadableDargonNode> Children { get { return new ConcatList<IReadableDargonNode>(m_directories, m_files); } }
+      public IReadOnlyList<ReadableDargonNode> Children { get { return new ConcatList<ReadableDargonNode>(m_directories, m_files); } }
 
       // : Release Manifest Concepts :
       /// <summary>
@@ -66,6 +66,10 @@ namespace Dargon.RADS.Manifest {
       public IReadOnlyCollection<IReleaseManifestDirectoryEntry> Directories { get { return m_directories; } }
 
       // - Helper Methods -------------------------------------------------------------------------
+      public ReadableDargonNode GetChildOrNull(string childName) {
+         return (ReadableDargonNode)GetChildFileOrNull(childName) ?? GetChildDirectoryOrNull(childName);
+      }
+
       public ReleaseManifestFileEntry GetChildFileOrNull(string childName) {
          foreach (var file in m_files)
             if (file.Name.Equals(childName, StringComparison.OrdinalIgnoreCase))
@@ -80,11 +84,15 @@ namespace Dargon.RADS.Manifest {
          return null;
       }
 
-      // : IReadableDargonNode Implementation :
-      IReadableDargonNode IReadableDargonNode.Parent { get { return m_parent; } }
-      IReadOnlyList<IReadableDargonNode> IReadableDargonNode.Children { get { return new ConcatList<IReadableDargonNode>(m_directories, m_files); } }
+      // : ReadableDargonNode Implementation :
+      ReadableDargonNode ReadableDargonNode.Parent { get { return m_parent; } }
+      IReadOnlyCollection<ReadableDargonNode> ReadableDargonNode.Children { get { return new ConcatList<ReadableDargonNode>(m_directories, m_files); } }
       public T GetComponentOrNull<T>() {
          return default(T);
+      }
+      public bool TryGetChild(string name, out ReadableDargonNode child) {
+         child = GetChildOrNull(name);
+         return child != null;
       }
    }
 }

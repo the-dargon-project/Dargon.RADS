@@ -35,29 +35,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -112,6 +92,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.IO\Dargon.IO.csproj">
+      <Project>{d28af7fa-367c-472c-954d-694319528208}</Project>
+      <Name>Dargon.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Utilities\Dargon.Utilities.csproj">
+      <Project>{d2a303a1-665f-4f6f-9bc6-3d91a8f02978}</Project>
+      <Name>Dargon.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ItzWarty.Commons\ItzWarty.Commons.csproj">
+      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
+      <Name>ItzWarty.Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ItzWarty.Proxies.Api\ItzWarty.Proxies.Api.csproj">
+      <Project>{6aaa4f38-0c18-4d29-b7a2-edddd08dc5ff}</Project>
+      <Name>ItzWarty.Proxies.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
