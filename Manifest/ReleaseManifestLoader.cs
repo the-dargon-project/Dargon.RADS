@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using Dargon.IO;
 using ItzWarty;
 
 namespace Dargon.RADS.Manifest {
@@ -100,25 +101,28 @@ namespace Dargon.RADS.Manifest {
          // - First load the directory block and treeify it ---------------------------------------
          reader.BaseStream.Position = context.DirectoryTableDataOffset;
          context.DirectoryDescriptors = new ReleaseManifestDirectoryDescriptor[context.DirectoryTableCount];
-         context.FileParentTable = new ReleaseManifestDirectoryEntry[context.FileTableCount];
-         context.directoryTable = new ReleaseManifestDirectoryEntry[context.DirectoryTableCount];
+         context.FileParentTable = new WritableDargonNode[context.FileTableCount];
+         context.DirectoryTable = new WritableDargonNode[context.DirectoryTableCount];
 
          for (var i = 0; i < context.DirectoryTableCount; i++)
             context.DirectoryDescriptors[i] = reader.ReadRMDirectoryDescriptor();
 
          DeserializeTreeifyDirectoryDescriptor(0, context);
-         manifest.Directories = new ReadOnlyCollection<ReleaseManifestDirectoryEntry>(context.directoryTable);
-         manifest.Root = context.directoryTable[0];
+         manifest.Directories = new ReadOnlyCollection<WritableDargonNode>(context.DirectoryTable);
+         manifest.Root = context.DirectoryTable[0];
 
          // - Place the File Descriptors into our tree---------------------------------------------
          reader.BaseStream.Position = context.FileTableDataOffset;
-         var files = new ReleaseManifestFileEntry[context.FileTableCount];
+         var files = new WritableDargonNode[context.FileTableCount];
          for (var fileId = 0U; fileId < context.FileTableCount; fileId++) {
             var fileDescriptor = reader.ReadRMFileEntryDescriptor();
-            files[fileId] = new ReleaseManifestFileEntry(fileId, manifest, fileDescriptor, context.FileParentTable[fileId]);
+            var node = new MutableDargonNodeImpl(manifest.StringTable[fileDescriptor.NameIndex]);
+            node.AddComponent(fileDescriptor);
+            context.FileParentTable[fileId].AddChild(node);
+            files[fileId] = node;
          }
 
-         manifest.Files = new ReadOnlyCollection<ReleaseManifestFileEntry>(files);
+         manifest.Files = new ReadOnlyCollection<WritableDargonNode>(files);
       }
 
       /// <summary>
@@ -129,11 +133,13 @@ namespace Dargon.RADS.Manifest {
       private void DeserializeTreeifyDirectoryDescriptor(
          uint directoryId,
          DeserializationContext context,
-         ReleaseManifestDirectoryEntry parent = null) {
+         WritableDargonNode parent = null) {
          // construct node at index
          var directoryDescriptor = context.DirectoryDescriptors[directoryId];
-         var directoryNode = new ReleaseManifestDirectoryEntry(directoryId, context.ReleaseManifest, directoryDescriptor, parent);
-         context.directoryTable[directoryId] = directoryNode;
+         var directoryNode = new MutableDargonNodeImpl(context.ReleaseManifest.StringTable[directoryDescriptor.NameIndex]);
+         directoryNode.Parent = parent;
+         directoryNode.AddComponent(directoryDescriptor);
+         context.DirectoryTable[directoryId] = directoryNode;
 
          // associate with directory's files
          // The if statement stops us from setting lastFileId to UINT32.MAX when we are
@@ -163,8 +169,8 @@ namespace Dargon.RADS.Manifest {
 
          // Loaded by DeserializeFileSystemBody calls to DeserializeTreeifyDirectoryDescriptor
          public ReleaseManifestDirectoryDescriptor[] DirectoryDescriptors;
-         public ReleaseManifestDirectoryEntry[] FileParentTable;
-         public ReleaseManifestDirectoryEntry[] directoryTable;
+         public WritableDargonNode[] FileParentTable;
+         public WritableDargonNode[] DirectoryTable;
       }
    }
 }

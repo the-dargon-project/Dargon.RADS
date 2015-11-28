@@ -5,7 +5,7 @@ namespace Dargon.RADS {
    public class RiotSolutionLoader {
       public RiotSolution Load(string radsPath, RiotProjectType? projectTypeLimit = null) {
          var solution = new RiotSolution(radsPath);
-         var projectLoader = new RiotProjectLoader(radsPath);
+         var projectLoader = new RiotProjectLoader();
          var projectsDirectory = Path.Combine(radsPath, "projects");
          var projectDirectories = Directory.GetDirectories(projectsDirectory);
          foreach (var projectPath in projectDirectories) {

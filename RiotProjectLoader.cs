@@ -1,29 +1,11 @@
-﻿using System;
+﻿using Dargon.RADS.Manifest;
+using ItzWarty;
 using System.IO;
 using System.Linq;
-using Dargon.RADS.Manifest;
-using ItzWarty;
+using Dargon.IO;
 
 namespace Dargon.RADS {
-   public class RiotProjectLoader {
-      private readonly string projectsDirectoryPath;
-
-      public RiotProjectLoader(string radsPath) {
-         projectsDirectoryPath = Path.Combine(radsPath, "projects");
-      }
-
-      public RiotProject LoadProject(RiotProjectType projectType) {
-         string projectName;
-         if (projectType == RiotProjectType.AirClient)
-            projectName = "lol_air_client";
-         else if (projectType == RiotProjectType.GameClient)
-            projectName = "lol_game_client";
-         else {
-            throw new NotImplementedException();
-         }
-         return LoadProject(projectType, Path.Combine(projectsDirectoryPath, projectName));
-      }
-
+   internal class RiotProjectLoader {
       public RiotProject LoadProject(RiotProjectType projectType, string projectPath) {
          // - Find the RADS Project's latest release directory ------------------------------------
          var versionStringParser = new VersionStringUtilities();
@@ -43,7 +25,10 @@ namespace Dargon.RADS {
          if (projectType == RiotProjectType.AirClient) {
             var rootEntry = releaseManifest.Root;
             var overloadName = Path.Combine(latestRelease.ReleasePath, "deploy");
-            var overload = new ReleaseManifestRootDirectoryOverload((ReleaseManifestDirectoryEntry)rootEntry, overloadName);
+            var overload = new MutableDargonNodeImpl(overloadName);
+            foreach (var child in rootEntry.Children.ToArray()) {
+               overload.AddChild(child);
+            }
             releaseManifest.Root = overload;
          }
 

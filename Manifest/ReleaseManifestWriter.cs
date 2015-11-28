@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Dargon.IO;
 
 namespace Dargon.RADS.Manifest {
    public class ReleaseManifestWriter {
@@ -39,12 +40,13 @@ namespace Dargon.RADS.Manifest {
             SerializeDirectory(writer, manifest.Directories[i]);
       }
 
-      private void SerializeDirectory(BinaryWriter writer, ReleaseManifestDirectoryEntry directory) {
-         writer.Write((UInt32)directory.NameStringTableIndex);
-         writer.Write((UInt32)directory.SubdirectoryStart);
-         writer.Write((UInt32)directory.SubdirectoryCount);
-         writer.Write((UInt32)directory.FileStart);
-         writer.Write((UInt32)directory.FileCount);
+      private void SerializeDirectory(BinaryWriter writer, WritableDargonNode directory) {
+         var descriptor = directory.GetComponentOrNull<ReleaseManifestDirectoryDescriptor>();
+         writer.Write((UInt32)descriptor.NameIndex);
+         writer.Write((UInt32)descriptor.SubdirectoryStart);
+         writer.Write((UInt32)descriptor.SubdirectoryCount);
+         writer.Write((UInt32)descriptor.FileStart);
+         writer.Write((UInt32)descriptor.FileCount);
       }
 
       private void SerializeFileTable(BinaryWriter writer) {
@@ -53,18 +55,19 @@ namespace Dargon.RADS.Manifest {
             SerializeFile(writer, manifest.Files[i]);
       }
 
-      private void SerializeFile(BinaryWriter writer, ReleaseManifestFileEntry file) {
-         writer.Write((UInt32)file.NameStringTableIndex);
-         writer.Write((UInt32)file.ArchiveId);
-         writer.Write((UInt64)file.ChecksumLow);
-         writer.Write((UInt64)file.ChecksumHigh);
-         writer.Write((UInt32)file.EntityType);
-         writer.Write((UInt32)file.DecompressedSize);
-         writer.Write((UInt32)file.CompressedSize);
-         writer.Write((UInt32)file.Checksum2);
-         writer.Write((UInt16)file.PatcherEntityType);
-         writer.Write((byte)file.UnknownConstant1);
-         writer.Write((byte)file.UnknownConstant2);
+      private void SerializeFile(BinaryWriter writer, WritableDargonNode file) {
+         var descriptor = file.GetComponentOrNull<ReleaseManifestFileEntryDescriptor>();
+         writer.Write((UInt32)descriptor.NameIndex);
+         writer.Write((UInt32)descriptor.ArchiveId);
+         writer.Write((UInt64)descriptor.ChecksumLow);
+         writer.Write((UInt64)descriptor.ChecksumHigh);
+         writer.Write((UInt32)descriptor.EntityType);
+         writer.Write((UInt32)descriptor.DecompressedSize);
+         writer.Write((UInt32)descriptor.CompressedSize);
+         writer.Write((UInt32)descriptor.Checksum2);
+         writer.Write((UInt16)descriptor.PatcherEntityType);
+         writer.Write((byte)descriptor.UnknownConstant1);
+         writer.Write((byte)descriptor.UnknownConstant2);
       }
 
       private void SerializeStringTable(BinaryWriter writer) {
