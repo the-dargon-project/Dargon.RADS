@@ -8,12 +8,11 @@ namespace Dargon.RADS {
    internal class RiotProjectLoader {
       public RiotProject LoadProject(RiotProjectType projectType, string projectPath) {
          // - Find the RADS Project's latest release directory ------------------------------------
-         var versionStringParser = new VersionStringUtilities();
          var releasesPath = Path.Combine(projectPath, "releases");
          var releases = from releasePath in Directory.GetDirectories(releasesPath)
-                        let versionString = versionStringParser.GetVersionString(releasePath)
+                        let versionString = VersionStringUtilities.GetVersionString(releasePath)
                         where !string.IsNullOrWhiteSpace(versionString)
-                        let versionNumber = versionStringParser.GetVersionNumber(versionString)
+                        let versionNumber = VersionStringUtilities.GetVersionNumber(versionString)
                         select new { ReleasePath = releasePath, VersionNumber = versionNumber };
          var latestRelease = releases.MaxBy((release) => release.VersionNumber);
 

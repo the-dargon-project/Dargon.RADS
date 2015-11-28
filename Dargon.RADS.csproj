@@ -60,13 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archives\RiotArchive.cs" />
-    <Compile Include="Archives\RAFDirectoryFile.cs" />
-    <Compile Include="Archives\RAFFileList.cs" />
-    <Compile Include="Archives\RAFFileListEntry.cs" />
-    <Compile Include="Archives\RAFHashUtil.cs" />
-    <Compile Include="Archives\RAFPacker.cs" />
-    <Compile Include="Archives\RAFStringTable.cs" />
-    <Compile Include="Archives\RAFUtil.cs" />
+    <Compile Include="Archives\RafHeader.cs" />
+    <Compile Include="Archives\RafEntry.cs" />
+    <Compile Include="Archives\RafUtil.cs" />
+    <Compile Include="Archives\RiotArchiveCollectionLoader.cs" />
     <Compile Include="Archives\RiotArchiveLoader.cs" />
     <Compile Include="Utilities\ConcatList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

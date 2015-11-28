@@ -65,12 +65,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoadOperationTests.cs" />
-    <Compile Include="ReleaseManifestTests.cs" />
+    <Compile Include="Archives\RiotArchiveLoadSaveTestFT.cs" />
+    <None Include="LoadOperationTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="ReleaseManifestTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Archives\ExampleArchive.raf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +97,12 @@
       <Project>{abf2ed7e-f5a9-4a4d-a983-3d356a126a02}</Project>
       <Name>Dargon.RADS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

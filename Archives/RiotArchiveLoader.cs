@@ -1,57 +1,99 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Diagnostics;
 using ItzWarty;
+using System.IO;
+using System.Text;
 
 namespace Dargon.RADS.Archives {
    public class RiotArchiveLoader {
-      private readonly string fileArchivesPath;
-      private Dictionary<uint, IReadOnlyList<RafDatPair>> pairCollectionsById = new Dictionary<uint, IReadOnlyList<RafDatPair>>();
+      public RiotArchive Load(string path) {
+         using (var stream = File.OpenRead(path))
+         using (var reader = new BinaryReader(stream)) {
+            stream.Seek(0, SeekOrigin.Begin);
+            var header = new RafHeader();
+            header.Magic = reader.ReadUInt32();
+            header.Version = reader.ReadUInt32();
+            header.ManagerIndexUnknown = reader.ReadUInt32();
+            var fileListOffset = reader.ReadUInt32();
+            var stringTableOffset = reader.ReadUInt32();
 
-      public RiotArchiveLoader(string solutionPath) {
-         fileArchivesPath = Path.Combine(solutionPath, "projects", "lol_game_client", "filearchives");
-         var parser = new VersionStringUtilities();
-         foreach (var directory in Directory.EnumerateDirectories(fileArchivesPath)) {
-            var name = Path.GetFileName(directory);
-            uint versionNumber;
-            if (parser.TryGetVersionNumber(name, out versionNumber)) {
-               var files = Directory.EnumerateFiles(directory);
-               var pairs = new List<RafDatPair>();
-               foreach (var rafPath in files.Where((path) => path.EndsWith(".raf", StringComparison.OrdinalIgnoreCase))) {
-                  var datPath = rafPath + ".dat";
-                  if (File.Exists(datPath)) {
-                     pairs.Add(new RafDatPair(rafPath, datPath));
+            stream.Seek(stringTableOffset, SeekOrigin.Begin);
+            uint stringTableByteSize = reader.ReadUInt32();
+            uint stringCount = reader.ReadUInt32();
+            var stringOffsets = new uint[stringCount];
+            for (var i = 0; i < stringOffsets.Length; i++) {
+               stringOffsets[i] = reader.ReadUInt32();
+               var stringLength = reader.ReadUInt32();
+            }
+            var strings = new string[stringCount];
+            for (var i = 0; i < stringOffsets.Length; i++) {
+               stream.Seek(stringTableOffset + stringOffsets[i], SeekOrigin.Begin);
+               strings[i] = reader.ReadNullTerminatedString();
+            }
+            stream.Seek(fileListOffset, SeekOrigin.Begin);
+            uint fileCount = reader.ReadUInt32();
+            var entries = new RafEntry[fileCount];
+            for (var i = 0; i < entries.Length; i++) {
+               var entry = new RafEntry();
+               entry.PathHash = reader.ReadUInt32();
+               entry.DataOffset = reader.ReadUInt32();
+               entry.DataLength = reader.ReadUInt32();
+               entry.StringTableIndex = reader.ReadUInt32();
+               entry.Path = strings[entry.StringTableIndex];
+               entries[i] = entry;
+            }
+            return new RiotArchive(path, header, strings, entries);
+         }
+      }
+
+      public void Save(string path, RiotArchive archive) {
+         const uint kFileListOffset = sizeof(uint) * 5;
+         const uint kFileListHeaderSize = sizeof(uint);
+         const uint kFileListEntrySize = sizeof(uint) * 4;
+         const uint kStringTableHeaderSize = sizeof(uint) * 2;
+         const uint kStringTableEntrySize = sizeof(uint) * 2;
+
+         var expectedStringTableOffset = (kFileListOffset + kFileListHeaderSize + kFileListEntrySize * archive.Entries.Length);
+
+         using (var stream = File.OpenWrite(path))
+         using (var writer = new BinaryWriter(stream)) {
+            stream.Seek(0, SeekOrigin.Begin);
+            var header = archive.Header;
+            writer.Write((uint)header.Magic);
+            writer.Write((uint)header.Version);
+            writer.Write((uint)header.ManagerIndexUnknown);
+            writer.Write((uint)kFileListOffset);
+            writer.Write((uint)expectedStringTableOffset);
+
+            writer.Write((uint)archive.Entries.Length);
+            foreach (var entry in archive.Entries) {
+               writer.Write((uint)entry.PathHash);
+               writer.Write((uint)entry.DataOffset);
+               writer.Write((uint)entry.DataLength);
+               writer.Write((uint)entry.StringTableIndex);
+            }
+
+            Trace.Assert(stream.Position == expectedStringTableOffset);
+            stream.Seek(kStringTableHeaderSize, SeekOrigin.Current);
+            var stringDataToTableOffset = kStringTableHeaderSize + kStringTableEntrySize * archive.Strings.Length;
+            using (var stringDataBlock = new MemoryStream()) {
+               using (var stringDataWriter = new BinaryWriter(stringDataBlock, Encoding.UTF8, true)) {
+                  foreach (var s in archive.Strings) {
+                     var stringDataStartOffset = stringDataBlock.Position;
+                     stringDataWriter.WriteNullTerminatedString(s);
+                     var stringDataEndOffset = stringDataBlock.Position;
+                     writer.Write((uint)(stringDataStartOffset + stringDataToTableOffset));
+                     writer.Write((uint)(stringDataEndOffset - stringDataStartOffset));
                   }
                }
-               pairCollectionsById.Add(versionNumber, pairs);
+
+               Trace.Assert(stream.Position == expectedStringTableOffset + stringDataToTableOffset);
+               writer.Write(stringDataBlock.GetBuffer(), 0, (int)stringDataBlock.Length);
+               stream.Seek(expectedStringTableOffset, SeekOrigin.Begin);
+               writer.Write((uint)(stringDataBlock.Length + stringDataToTableOffset));
+               writer.Write((uint)archive.Strings.Length);
             }
          }
-      }
-
-      public bool TryLoadArchives(uint version, out IReadOnlyList<RiotArchive> archives)
-      {
-         IReadOnlyList<RafDatPair> pairs;
-         if (!pairCollectionsById.TryGetValue(version, out pairs)) {
-            archives = null;
-            return false;
-         } else {
-            archives = Util.Generate(pairs.Count, i => new RiotArchive(pairs[i].ArchivePath, pairs[i].DataPath));
-            return true;
-         }
-      }
-
-      private class RafDatPair {
-         private readonly string archivePath;
-         private readonly string dataPath;
-
-         public RafDatPair(string archivePath, string dataPath) {
-            this.archivePath = archivePath;
-            this.dataPath = dataPath;
-         }
-
-         public string ArchivePath { get { return archivePath; } }
-         public string DataPath { get { return dataPath; } }
       }
    }
 }

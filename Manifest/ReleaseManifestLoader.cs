@@ -38,7 +38,7 @@ namespace Dargon.RADS.Manifest {
          }
          var releasesPath = Path.Combine(radsPath, "projects", projectName, "releases");
          var releasesNames = Directory.EnumerateDirectories(releasesPath, "*", SearchOption.TopDirectoryOnly);
-         var maximumRelease = releasesNames.MaxBy(new VersionStringUtilities().GetVersionNumber);
+         var maximumRelease = releasesNames.MaxBy(VersionStringUtilities.GetVersionNumber);
          var releaseManifestPath = Path.Combine(releasesPath, maximumRelease, "releasemanifest");
          return LoadFile(releaseManifestPath);
       }
